@@ -1,0 +1,2603 @@
+<title>Tu primera hora programando</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+/* Cuaderno de clase: la misma hoja punteada, tinta gruesa y sombras duras del
+   cuaderno de repaso de Diego. El color SIGNIFICA algo: azul = código,
+   amarillo = tu turno, verde = funcionó, rojo = error, morado = memoria. */
+:root{
+  --paper:#f7f1e3; --paper-2:#efe7d5; --card:#fffdf6; --code:#fbf7ec;
+  --ink:#1a1712; --ink-2:#5d564a; --ink-3:#857d6f; --line:#1a1712; --shadow:#1a1712;
+  --dot:rgba(26,23,18,.10); --rule:rgba(26,23,18,.18);
+  --blue:#2f6fed; --green:#12a150; --yellow:#f7c33f; --purple:#7c5cff; --red:#e0454b; --pink:#ec6ba8;
+  --on-color:#1a1712; --on-strong:#fffdf6;
+  --blue-soft:#dfe8fd; --green-soft:#d9f2e3; --yellow-soft:#fdf0c7; --red-soft:#fbdedf; --purple-soft:#e9e3ff;
+  --term-bg:#1d1b17; --term-fg:#f3efe5; --term-dim:#a39c8e; --term-in:#ffd45e;
+  --t-kw:#7c3aed; --t-fn:#1d5bd8; --t-str:#0f7a3d; --t-num:#c2410c; --t-com:#8b8375;
+  --bw:2.5px; --r:14px; --sh:4px 4px 0 var(--shadow); --sh-sm:3px 3px 0 var(--shadow);
+  --disp:"Fredoka","Nunito",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --body:"Nunito",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --hand:"Caveat","Comic Sans MS","Segoe Print",cursive;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#1b1a21; --paper-2:#232229; --card:#26252e; --code:#201f27;
+  --ink:#f3efe5; --ink-2:#b9b2a4; --ink-3:#8f8a80; --line:#f3efe5; --shadow:#000;
+  --dot:rgba(243,239,229,.09); --rule:rgba(243,239,229,.2);
+  --blue:#6fa0ff; --green:#4fd18b; --yellow:#ffd45e; --purple:#a68bff; --red:#ff7a80; --pink:#ff8ec2;
+  --on-color:#1a1712; --on-strong:#1a1712;
+  --blue-soft:#25304a; --green-soft:#1f3a2c; --yellow-soft:#3d3420; --red-soft:#432427; --purple-soft:#302a4d;
+  --term-bg:#111015; --term-fg:#f3efe5; --term-dim:#8f8a80; --term-in:#ffd45e;
+  --t-kw:#c4a6ff; --t-fn:#8fb6ff; --t-str:#7fdca5; --t-num:#ffb27a; --t-com:#8f8a80;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#1b1a21; --paper-2:#232229; --card:#26252e; --code:#201f27;
+  --ink:#f3efe5; --ink-2:#b9b2a4; --ink-3:#8f8a80; --line:#f3efe5; --shadow:#000;
+  --dot:rgba(243,239,229,.09); --rule:rgba(243,239,229,.2);
+  --blue:#6fa0ff; --green:#4fd18b; --yellow:#ffd45e; --purple:#a68bff; --red:#ff7a80; --pink:#ff8ec2;
+  --on-color:#1a1712; --on-strong:#1a1712;
+  --blue-soft:#25304a; --green-soft:#1f3a2c; --yellow-soft:#3d3420; --red-soft:#432427; --purple-soft:#302a4d;
+  --term-bg:#111015; --term-fg:#f3efe5; --term-dim:#8f8a80; --term-in:#ffd45e;
+  --t-kw:#c4a6ff; --t-fn:#8fb6ff; --t-str:#7fdca5; --t-num:#ffb27a; --t-com:#8f8a80;
+  color-scheme:dark}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--body);font-size:17px;line-height:1.65;color:var(--ink);background-color:var(--paper);
+  background-image:radial-gradient(var(--dot) 1.4px,transparent 1.4px);background-size:22px 22px;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--paper-2)}
+h1,h2,h3{font-family:var(--disp);line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--blue);font-weight:700}
+code,.mono{font-family:var(--mono);font-size:.9em}
+:not(pre)>code{background:var(--blue-soft);border-radius:6px;padding:1px 6px;white-space:nowrap}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* ---------- barra de arriba ---------- */
+.barra{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper-2);border-bottom:var(--bw) solid var(--line);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px}
+.barra-in{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.barra-marca{font:700 17px var(--disp);white-space:nowrap;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.barra-marca .logo{width:28px;height:28px;flex:none}
+.barra-ahora{flex:1;min-width:0;font-size:14px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra-ahora b{color:var(--ink)}
+.pill{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);border-radius:999px;background:var(--card);
+  padding:4px 12px;font:600 14px var(--disp);box-shadow:2px 2px 0 var(--shadow);cursor:pointer;min-height:36px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pill[aria-pressed="true"]{background:var(--yellow);color:var(--on-color)}
+.pill.tarde{background:var(--red-soft)}
+.pill svg{width:16px;height:16px}
+@media (max-width:560px){.barra-ahora{display:none}.barra-marca span{display:none}.barra-in{justify-content:space-between}}
+
+/* ---------- página ---------- */
+main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 64px}
+.col{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+.hoja{background:var(--card);border:var(--bw) solid var(--line);border-radius:var(--r);box-shadow:6px 6px 0 var(--shadow);
+  padding:22px clamp(16px,4vw,32px) 28px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.hoja>*{min-width:0}
+.hoja-cab{display:flex;flex-direction:column;gap:8px}
+.etq{align-self:flex-start;display:inline-flex;gap:8px;align-items:center;font:600 13px var(--disp);letter-spacing:.06em;text-transform:uppercase;
+  background:var(--blue);color:var(--on-strong);border:2px solid var(--line);border-radius:999px;padding:3px 12px}
+.etq .min{opacity:.85;font-weight:500}
+.hoja h2{font-size:clamp(1.6rem,4.6vw,2.1rem)}
+.hoja h3{font-size:1.2rem;margin-top:6px}
+.lead{font-size:1.08rem;color:var(--ink-2);max-width:62ch}
+.texto{max-width:65ch;display:flex;flex-direction:column;gap:12px}
+.nota-mano{font:700 1.45rem/1.2 var(--hand);color:var(--blue);transform:rotate(-1.2deg)}
+.idea{border:2px solid var(--line);border-radius:12px;background:var(--yellow-soft);padding:12px 16px;max-width:65ch}
+.idea b{font-family:var(--disp)}
+.dato{border-left:5px solid var(--purple);background:var(--purple-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.95rem;max-width:65ch}
+.fila{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+/* hero */
+.portada{background:var(--card);border:var(--bw) solid var(--line);border-radius:var(--r);box-shadow:6px 6px 0 var(--shadow);overflow:hidden;
+  display:grid;grid-template-columns:1.1fr 1fr}
+.portada-txt{padding:28px clamp(16px,4vw,32px);display:flex;flex-direction:column;gap:14px;min-width:0}
+.portada h1{font-size:clamp(2.1rem,6.5vw,3.2rem)}
+.portada h1 em{font-style:normal;background:var(--yellow);color:var(--on-color);padding:0 .15em;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.portada-demo{background:var(--paper-2);border-left:var(--bw) solid var(--line);padding:22px clamp(16px,3vw,26px);display:flex;flex-direction:column;gap:12px;min-width:0}
+.portada-demo label{font:600 15px var(--disp)}
+.campo{font:600 17px var(--body);border:2px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);width:100%;min-height:46px}
+.agenda{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:4px}
+.agenda a{display:flex;flex-direction:column;gap:2px;border:2px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--paper);text-decoration:none;color:var(--ink);font-weight:600;font-size:14px;line-height:1.25}
+.agenda a small{color:var(--ink-3);font:500 12px var(--disp);font-variant-numeric:tabular-nums}
+.agenda a.hecho{background:var(--green-soft)}
+@media (max-width:760px){.portada{grid-template-columns:1fr}.portada-demo{border-left:0;border-top:var(--bw) solid var(--line)}}
+
+/* botones */
+.btn{text-decoration:none;font:600 15px var(--disp);border:2px solid var(--line);border-radius:10px;padding:8px 14px;background:var(--card);color:var(--ink);
+  box-shadow:var(--sh-sm);cursor:pointer;display:inline-flex;align-items:center;gap:7px;min-height:44px;line-height:1.1;text-align:left}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--shadow)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:var(--sh-sm)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-verde{background:var(--green);color:var(--on-color)}
+.btn-amarillo{background:var(--yellow);color:var(--on-color)}
+.btn-azul{background:var(--blue);color:var(--on-strong)}
+.btn-chico{min-height:36px;padding:5px 10px;font-size:14px}
+.btn-grande{font-size:18px;padding:12px 20px;min-height:52px}
+
+/* ---------- código y resaltado ---------- */
+.t-kw{color:var(--t-kw);font-weight:700}.t-fn{color:var(--t-fn);font-weight:600}.t-str{color:var(--t-str)}.t-num{color:var(--t-num)}
+.t-com{color:var(--t-com);font-style:italic}.t-llave{font-weight:700;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+pre.codigo{margin:0;background:var(--code);border:2px solid var(--line);border-radius:12px;padding:12px 14px;font:15px/1.6 var(--mono);overflow-x:auto;tab-size:4}
+
+/* ---------- editor ---------- */
+.ed{border:var(--bw) solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column}
+.ed-barra{display:flex;gap:8px;flex-wrap:wrap;padding:10px;border-bottom:2px solid var(--line);background:var(--paper-2);align-items:center}
+.ed-barra .esp{flex:1}
+.ed-titulo{font:600 13px var(--disp);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);padding:0 4px}
+.ed-codigo{display:flex;background:var(--code);position:relative}
+.ed-gutter{padding:12px 0;min-width:2.8em;text-align:right;color:var(--ink-3);font:14px/24px var(--mono);border-right:2px dashed var(--rule);user-select:none;-webkit-user-select:none;flex:none}
+.ed-gutter span{display:block;height:24px;padding-right:9px}
+.ed-gutter span.mal{background:var(--red);color:var(--on-color);font-weight:700}
+.ed-texto{flex:1;min-width:0;font:16px/24px var(--mono);padding:12px;border:0;margin:0;resize:none;background:transparent;color:var(--ink);
+  white-space:pre;overflow-x:auto;overflow-y:hidden;tab-size:4;outline:none;caret-color:var(--blue)}
+.ed-codigo:focus-within{box-shadow:inset 0 0 0 3px var(--blue)}
+.ed-vista{flex:1;min-width:0;overflow-x:auto;padding:12px 0;font:16px/24px var(--mono)}
+.vl{display:flex;min-height:24px;position:relative;width:max-content;min-width:100%}
+.vn{width:2.8em;flex:none;text-align:right;padding-right:9px;color:var(--ink-3);font-size:14px;border-right:2px dashed var(--rule);user-select:none}
+.vc{white-space:pre;padding:0 14px 0 12px}
+.vl.sigue{background:var(--yellow-soft)}
+.vl.sigue .vn{background:var(--yellow);color:var(--on-color);font-weight:700}
+.vl.acaba{background:var(--green-soft)}
+.vl .dec{font:700 12px var(--disp);border:2px solid var(--line);border-radius:999px;padding:0 8px;margin-left:10px;align-self:center;white-space:nowrap}
+.vl .dec.si{background:var(--green);color:var(--on-color)}.vl .dec.no{background:var(--red);color:var(--on-color)}
+.ed-vista-ayuda{font:600 13px var(--disp);color:var(--ink-2);padding:6px 12px;border-top:2px dashed var(--rule);display:flex;gap:14px;flex-wrap:wrap}
+.ed-vista-ayuda i{font-style:normal;display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-radius:3px;vertical-align:-1px;margin-right:4px}
+.ed-teclas{display:flex;gap:6px;padding:8px 10px;border-top:2px dashed var(--rule);background:var(--code);overflow-x:auto;scrollbar-width:none}
+.ed-teclas button{font:600 15px var(--mono);min-width:40px;min-height:38px;border:2px solid var(--line);border-radius:8px;background:var(--card);box-shadow:2px 2px 0 var(--shadow);cursor:pointer;flex:none;padding:0 8px}
+.ed-teclas button:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--shadow)}
+.ed-pasos{display:flex;gap:8px;flex-wrap:wrap;padding:10px;border-top:2px solid var(--line);background:var(--yellow-soft);align-items:center}
+.ed-pasos .cuenta{font:600 14px var(--disp);color:var(--ink-2);margin-left:auto;font-variant-numeric:tabular-nums}
+.ed-mem{border-top:2px solid var(--line);background:var(--paper);padding:10px 12px 14px;display:flex;flex-direction:column;gap:8px}
+.ed-mem-tit{font:600 13px var(--disp);letter-spacing:.05em;text-transform:uppercase;color:var(--purple)}
+.cajas{display:flex;flex-wrap:wrap;gap:12px}
+.cajas .vacio{color:var(--ink-3);font-size:14px}
+.caja{border:2px solid var(--line);border-radius:10px;background:var(--card);box-shadow:var(--sh-sm);min-width:92px;max-width:100%;overflow:hidden}
+.caja-etq{display:block;background:var(--purple);color:var(--on-strong);font:700 13px var(--mono);padding:2px 9px;border-bottom:2px solid var(--line)}
+.caja-val{display:block;padding:6px 10px 2px;font:700 17px var(--mono);word-break:break-word}
+.caja-tipo{display:block;font:500 11px var(--disp);color:var(--ink-3);padding:0 10px 6px;letter-spacing:.03em}
+.caja.str .caja-val{color:var(--t-str)}.caja.int .caja-val,.caja.float .caja-val{color:var(--t-fn)}.caja.bool .caja-val{color:var(--t-kw)}
+.caja.nueva{animation:pop .55s ease}
+.lista-celdas{display:flex;gap:4px;flex-wrap:wrap;padding:6px 8px 2px}
+.lista-celdas span{border:2px solid var(--line);border-radius:6px;padding:0 6px;font:600 14px var(--mono);background:var(--yellow-soft);position:relative}
+.lista-celdas span small{display:block;font:500 10px var(--disp);color:var(--ink-3);text-align:center}
+@keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.1) rotate(-2deg);background:var(--yellow-soft)}100%{transform:scale(1)}}
+.ed-consola{background:var(--term-bg);color:var(--term-fg);font:15px/1.55 var(--mono);padding:12px 14px;min-height:3.4em;white-space:pre-wrap;word-break:break-word;border-top:2px solid var(--line);max-height:340px;overflow-y:auto}
+.ed-consola .tit{display:block;font:600 11px var(--disp);letter-spacing:.08em;text-transform:uppercase;color:var(--term-dim);margin-bottom:4px}
+.ed-consola .tenue{color:var(--term-dim);font-style:italic}
+.ed-consola .tecleado{color:var(--term-in);font-weight:700}
+.ed-consola form{display:inline-flex;gap:6px;align-items:center;vertical-align:middle}
+.ed-consola input{font:700 16px var(--mono);color:var(--term-in);background:transparent;border:0;border-bottom:2px solid var(--term-in);width:12ch;max-width:60vw;padding:2px 0;outline:none;border-radius:0}
+.ed-consola form button{font:600 13px var(--disp);background:var(--term-in);color:#1a1712;border:0;border-radius:6px;padding:3px 9px;cursor:pointer;min-height:30px}
+.ed-consola .cursor{display:inline-block;width:.6em;height:1.1em;background:var(--term-in);vertical-align:-2px;animation:parpadeo 1s steps(1) infinite}
+@keyframes parpadeo{50%{opacity:0}}
+.ed-error{border-top:2px solid var(--line);background:var(--red-soft);padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.ed-error b{font:700 15px var(--disp);color:var(--red)}
+.ed-error .tipo{font:500 12px var(--mono);color:var(--ink-3)}
+.ed-error .pista{font-size:15px}
+.ed-error .animo{font:700 1.15rem var(--hand);color:var(--ink-2)}
+.ed-reto{border-top:2px solid var(--line);background:var(--blue-soft);padding:12px;display:flex;flex-direction:column;gap:10px}
+.ed-reto-res{border:2px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card);font-size:15px}
+.ed-reto-res.ok{background:var(--green-soft)}
+.ed-reto-res.mal{background:var(--red-soft)}
+.ed-pista{border:2px dashed var(--line);border-radius:10px;padding:8px 12px;background:var(--card);font-size:15px}
+.ed.corriendo .ed-titulo::after{content:" · corriendo";color:var(--green)}
+
+/* ---------- reto (tarjeta) ---------- */
+.reto{border:var(--bw) solid var(--line);border-radius:var(--r);background:var(--yellow-soft);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.reto-cab{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.reto-cab .sello{font:700 13px var(--disp);letter-spacing:.06em;text-transform:uppercase;background:var(--yellow);color:var(--on-color);border:2px solid var(--line);border-radius:999px;padding:2px 10px}
+.reto-cab h3{margin:0;font-size:1.15rem}
+.reto ul{margin:0;padding-left:1.2em}
+
+/* ---------- quiz ---------- */
+.quiz{border:var(--bw) solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--sh-sm);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.quiz-cab{font:600 13px var(--disp);letter-spacing:.06em;text-transform:uppercase;color:var(--pink)}
+.quiz-ops{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.quiz-ops button{font:600 15px var(--mono);border:2px solid var(--line);border-radius:10px;background:var(--paper);padding:10px;cursor:pointer;min-height:46px;box-shadow:2px 2px 0 var(--shadow);text-align:center;white-space:pre-wrap}
+.quiz-ops button.bien{background:var(--green);color:var(--on-color)}
+.quiz-ops button.mal{background:var(--red-soft);text-decoration:line-through}
+.quiz-ops button:disabled{cursor:default}
+.quiz-exp{font-size:15px;border-left:4px solid var(--green);padding-left:10px}
+.quiz-exp.mal{border-color:var(--red)}
+
+/* ---------- robot ---------- */
+.robot-zona{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:700px){.robot-zona{grid-template-columns:1fr}}
+.tablero{position:relative;aspect-ratio:1;max-width:100%;width:100%;border:var(--bw) solid var(--line);border-radius:12px;background:var(--paper);display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);overflow:hidden;box-shadow:var(--sh)}
+.celda{border-right:1.5px dashed var(--rule);border-bottom:1.5px dashed var(--rule);display:grid;place-items:center}
+.celda:nth-child(5n){border-right:0}.celda:nth-child(n+21){border-bottom:0}
+.celda svg{width:72%;height:72%}
+.celda.paso{background:var(--blue-soft)}
+.bot{position:absolute;left:0;top:0;width:20%;height:20%;display:grid;place-items:center;transition:transform .38s cubic-bezier(.4,.1,.3,1.2)}
+.bot svg{width:78%;height:78%;transition:transform .3s ease}
+.bot.choca svg{animation:choque .45s}
+@keyframes choque{20%,60%{translate:-4px 0}40%,80%{translate:4px 0}}
+.robot-lado{display:flex;flex-direction:column;gap:12px;min-width:0}
+.niveles{display:flex;gap:6px;flex-wrap:wrap}
+.niveles button{font:600 14px var(--disp);border:2px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--card);cursor:pointer;min-height:36px}
+.niveles button[aria-pressed="true"]{background:var(--blue);color:var(--on-strong)}
+.niveles button.hecho::after{content:" ✓"}
+.ordenes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ordenes .btn{justify-content:center;flex-direction:column;gap:2px;font-size:14px;min-height:62px;text-align:center}
+.ordenes .btn svg{width:22px;height:22px}
+.programa-robot{min-height:58px;border:2px dashed var(--line);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;background:var(--code)}
+.programa-robot .vacio{color:var(--ink-3);font-size:14px;align-self:center}
+.chip{font:600 13px var(--mono);border:2px solid var(--line);border-radius:8px;background:var(--card);padding:3px 8px;cursor:pointer;display:inline-flex;gap:5px;align-items:center;min-height:32px}
+.chip small{color:var(--ink-3);font-family:var(--disp)}
+.chip.activo{background:var(--yellow);color:var(--on-color)}
+.chip.choco{background:var(--red);color:var(--on-color)}
+.msg{border:2px solid var(--line);border-radius:10px;padding:8px 12px;font-size:15px;background:var(--card)}
+.msg.ok{background:var(--green-soft)}.msg.mal{background:var(--red-soft)}
+
+/* ---------- anatomía ---------- */
+.anatomia{display:flex;flex-direction:column;gap:10px}
+.anat-linea{font:700 clamp(18px,4.6vw,26px)/1.4 var(--mono);display:flex;flex-wrap:wrap;gap:2px;align-items:center}
+.anat-linea button{font:inherit;border:2px dashed transparent;border-radius:8px;background:none;padding:2px 3px;cursor:pointer}
+.anat-linea button:hover,.anat-linea button[aria-pressed="true"]{border-color:var(--line);background:var(--yellow-soft)}
+.anat-exp{min-height:3.2em;border:2px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--paper);font-size:15px}
+
+/* ---------- diagrama de flujo ---------- */
+.flujo-zona{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:720px){.flujo-zona{grid-template-columns:1fr}}
+.flujo svg{width:100%;height:auto;display:block}
+.flujo .nodo rect,.flujo .nodo polygon{fill:var(--card);stroke:var(--line);stroke-width:2.5}
+.flujo text{fill:var(--ink);font:600 13px var(--disp);text-anchor:middle;dominant-baseline:middle}
+.flujo .flecha{stroke:var(--line);stroke-width:2.5;fill:none}
+.flujo .punta{fill:var(--line)}
+.flujo .rama{transition:opacity .25s}
+.flujo .rama.apagada{opacity:.25}
+.flujo .rama.encendida .nodo rect{fill:var(--green-soft)}
+.flujo .rama.encendida .flecha{stroke:var(--green);stroke-width:4}
+.flujo .rama.encendida .punta{fill:var(--green)}
+.flujo .etiqueta-rama{font:700 13px var(--disp)}
+.deslizador{display:flex;flex-direction:column;gap:6px}
+.deslizador label{font:600 15px var(--disp);display:flex;justify-content:space-between}
+.deslizador output{font:700 20px var(--mono);color:var(--t-num)}
+input[type=range]{width:100%;accent-color:var(--blue);min-height:32px}
+.salida-mini{background:var(--term-bg);color:var(--term-fg);font:15px/1.5 var(--mono);border-radius:10px;padding:10px 12px;border:2px solid var(--line);min-height:2.6em;white-space:pre-wrap}
+.codigo .linea-on{background:var(--green-soft);display:inline-block;width:100%}
+.codigo .linea-off{opacity:.45}
+
+/* ---------- range ---------- */
+.rango{display:flex;flex-direction:column;gap:12px}
+.rango-ctl{display:flex;gap:10px;flex-wrap:wrap}
+.paso-num{display:flex;flex-direction:column;gap:4px;border:2px solid var(--line);border-radius:10px;padding:6px 8px;background:var(--paper);min-width:112px}
+.paso-num span{font:600 12px var(--disp);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.paso-num div{display:flex;align-items:center;gap:6px;justify-content:space-between}
+.paso-num button{width:36px;height:36px;border:2px solid var(--line);border-radius:8px;background:var(--card);font:700 18px var(--disp);cursor:pointer;box-shadow:2px 2px 0 var(--shadow)}
+.paso-num b{font:700 20px var(--mono);font-variant-numeric:tabular-nums;min-width:2ch;text-align:center}
+.rango-res{display:flex;flex-wrap:wrap;gap:6px;min-height:44px;align-items:center}
+.rango-res span{font:700 16px var(--mono);border:2px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--blue-soft);animation:pop .4s}
+.rango-res span.fuera{background:transparent;border-style:dashed;color:var(--ink-3);text-decoration:line-through}
+
+/* ---------- rompecabezas ---------- */
+.parsons{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.parsons{grid-template-columns:1fr}}
+.pz-col{display:flex;flex-direction:column;gap:8px;min-width:0}
+.pz-col h3{font-size:1rem;margin:0}
+.pz-lista{border:2px dashed var(--line);border-radius:12px;padding:8px;min-height:120px;display:flex;flex-direction:column;gap:6px;background:var(--code)}
+.pieza{font:600 14px/1.4 var(--mono);text-align:left;border:2px solid var(--line);border-radius:8px;background:var(--card);padding:7px 10px;cursor:pointer;box-shadow:2px 2px 0 var(--shadow);white-space:pre;overflow-x:auto;min-height:40px}
+.pieza.fija{background:var(--paper-2);cursor:default;box-shadow:none;border-style:dashed;color:var(--ink-2)}
+.pieza .sang{color:var(--rule);background:repeating-linear-gradient(90deg,var(--rule) 0 2px,transparent 2px 100%);background-size:2.4em 100%}
+.pz-lista .vacio{color:var(--ink-3);font-size:14px;padding:6px}
+
+/* ---------- cierre ---------- */
+.stickers{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:12px}
+.sticker{border:2.5px dashed var(--rule);border-radius:16px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font:600 14px/1.2 var(--disp);color:var(--ink-3)}
+.sticker svg{width:44px;height:44px;opacity:.3}
+.sticker.ganado{border:2.5px solid var(--line);background:var(--yellow-soft);color:var(--ink);box-shadow:var(--sh-sm);transform:rotate(-2deg)}
+.sticker.ganado:nth-child(even){transform:rotate(2deg)}
+.sticker.ganado svg{opacity:1}
+.sticker.recien{animation:pop .7s}
+.encuesta{display:flex;flex-direction:column;gap:10px}
+.preg{border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--paper);display:flex;flex-direction:column;gap:8px}
+.preg p{font-weight:700}
+.preg .ops{display:flex;gap:6px;flex-wrap:wrap}
+.preg .ops button{font:600 14px var(--disp);border:2px solid var(--line);border-radius:999px;padding:5px 14px;background:var(--card);cursor:pointer;min-height:38px}
+.preg .ops button[aria-pressed="true"]{background:var(--blue);color:var(--on-strong)}
+.veredicto{border:var(--bw) solid var(--line);border-radius:var(--r);padding:14px 16px;background:var(--green-soft);display:flex;flex-direction:column;gap:6px}
+.veredicto b{font:700 1.15rem var(--disp)}
+.recursos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.recurso{border:2px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--paper);display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--ink);font-weight:400;box-shadow:var(--sh-sm)}
+.recurso b{font:700 16px var(--disp);color:var(--blue)}
+.recurso small{color:var(--ink-3);font:600 12px var(--disp);letter-spacing:.04em;text-transform:uppercase}
+
+/* ---------- modo profe ---------- */
+.profe{display:none}
+html.modo-profe .profe{display:flex}
+.profe{flex-direction:column;gap:6px;background:var(--yellow-soft);border:2px solid var(--line);border-radius:4px 14px 14px 14px;padding:12px 14px 14px;position:relative;box-shadow:var(--sh-sm);font-size:15.5px}
+.profe::before{content:"Modo profe";font:700 12px var(--disp);letter-spacing:.08em;text-transform:uppercase;background:var(--pink);color:var(--on-color);border:2px solid var(--line);border-radius:999px;padding:1px 10px;align-self:flex-start}
+.profe .mano{font:700 1.3rem/1.2 var(--hand);color:var(--ink-2)}
+.profe ul{margin:0;padding-left:1.15em}
+.rubrica label{display:flex;gap:10px;align-items:flex-start;padding:4px 0;cursor:pointer}
+.rubrica input{width:22px;height:22px;accent-color:var(--pink);flex:none;margin-top:3px}
+.pie{text-align:center;color:var(--ink-3);font-size:14px}
+.oculto{display:none!important}
+</style>
+
+<header class="barra">
+  <div class="barra-in">
+    <a class="barra-marca" href="#inicio" aria-label="Ir al inicio">
+      <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="3" width="34" height="34" rx="9" fill="var(--blue)" stroke="var(--line)" stroke-width="2.5"/><path d="M12 15l6 5-6 5" fill="none" stroke="var(--on-strong)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 26h8" stroke="var(--yellow)" stroke-width="3.2" stroke-linecap="round"/></svg>
+      <span>Clase 1 · Python</span>
+    </a>
+    <div class="barra-ahora" id="ahora">Plan: <b>60 minutos</b>, 7 partes y un reto final</div>
+    <button class="pill" id="reloj" type="button" aria-label="Cronómetro de la clase">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>
+      <span id="reloj-txt">Empezar</span>
+    </button>
+    <span class="pill" id="estrellas" title="Stickers ganados" aria-live="polite">
+      <svg viewBox="0 0 24 24" fill="var(--yellow)" stroke="var(--line)" stroke-width="2" stroke-linejoin="round"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z"/></svg>
+      <span id="estrellas-txt">0/7</span>
+    </span>
+    <button class="pill" id="btn-profe" type="button" aria-pressed="false" title="Muestra las notas para quien da la clase">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg>
+      <span>Profe</span>
+    </button>
+  </div>
+</header>
+
+<main>
+<div class="col">
+
+<!-- ================= PORTADA ================= -->
+<section class="portada" id="inicio">
+  <div class="portada-txt">
+    <span class="etq">Clase 1 · Python · 60 min</span>
+    <h1>Tu primera hora <em>programando</em></h1>
+    <p class="lead">Vas a escribir programas de verdad: uno que te saluda, otro que hace cuentas, uno que decide, otro que repite y, al final, un juego de adivinar. No necesitas instalar nada ni saber matemáticas.</p>
+    <div class="agenda" id="agenda"></div>
+    <div class="fila"><a class="btn btn-verde btn-grande" href="#s-robot" id="btn-empezar">Empezar la clase</a></div>
+  </div>
+  <div class="portada-demo">
+    <label for="nombre-demo">Escribe tu nombre y mira el código:</label>
+    <input class="campo" id="nombre-demo" type="text" maxlength="24" autocomplete="off" autocapitalize="words" value="Ana">
+    <pre class="codigo" id="demo-codigo" aria-label="Código de ejemplo"></pre>
+    <div class="salida-mini" id="demo-salida" aria-live="polite"></div>
+    <p class="nota-mano">↑ esto ya es Python de verdad. Cambia tu nombre.</p>
+  </div>
+</section>
+
+<!-- ================= 1. ROBOT ================= -->
+<section class="hoja" id="s-robot" data-titulo="¿Qué es programar?" data-ini="0" data-fin="7">
+  <div class="hoja-cab"><span class="etq">Parte 1 <span class="min">· min 0–7</span></span><h2>¿Qué es programar?</h2></div>
+  <div class="texto">
+    <p>Programar es darle a la computadora una <b>lista de instrucciones</b>. Ella las sigue al pie de la letra, una por una y en orden. Es rapidísima y nunca se cansa, pero tampoco adivina lo que quisiste decir: si le das la instrucción equivocada, hace la instrucción equivocada.</p>
+    <p>Pruébalo: lleva al robot hasta la estrella. Toca las órdenes para armar su lista y luego dale <b>Correr</b>.</p>
+  </div>
+  <div class="profe">
+    <p class="mano">Antes de tocar la pantalla (2 min):</p>
+    <ul>
+      <li>Pídele que te dé instrucciones para que te levantes y llegues a la puerta. Obedece <b>literalmente</b>: si dice «camina» y no dice cuántos pasos, sigue caminando hasta topar con la pared.</li>
+      <li>Cuando se ría o corrija, ya entendió lo importante de la clase: la computadora es literal.</li>
+      <li>Observa en el nivel 3 si nota sola que repite lo mismo. No se lo digas tú.</li>
+    </ul>
+  </div>
+  <div class="robot-zona">
+    <div>
+      <div class="tablero" id="tablero" aria-label="Tablero del robot"></div>
+    </div>
+    <div class="robot-lado">
+      <div class="niveles" id="niveles" role="group" aria-label="Niveles"></div>
+      <div class="ordenes">
+        <button class="btn" type="button" data-orden="avanza"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5M6 11l6-6 6 6"/></svg>Avanza</button>
+        <button class="btn" type="button" data-orden="izq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h9a6 6 0 0 1 6 6v5"/></svg>Gira izq.</button>
+        <button class="btn" type="button" data-orden="der"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14l5-5-5-5"/><path d="M20 9h-9a6 6 0 0 0-6 6v5"/></svg>Gira der.</button>
+      </div>
+      <div class="programa-robot" id="programa-robot" aria-live="polite"></div>
+      <div class="fila">
+        <button class="btn btn-verde" type="button" id="robot-correr"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>Correr</button>
+        <button class="btn btn-chico" type="button" id="robot-borrar">Borrar la última</button>
+        <button class="btn btn-chico" type="button" id="robot-limpiar">Empezar de nuevo</button>
+      </div>
+      <div class="msg" id="robot-msg">Toca una orden para agregarla. Toca una orden de la lista para quitarla.</div>
+    </div>
+  </div>
+  <div class="idea"><b>Lo que acabas de hacer es programar.</b> Un <b>programa</b> es una lista de instrucciones. Un <b>lenguaje de programación</b> es el idioma en que se las escribes. Hoy usamos <b>Python</b>: uno de los lenguajes más usados del mundo y el favorito para inteligencia artificial. Se lee casi como inglés.</div>
+  <p class="dato">Dato: Python lo creó Guido van Rossum y salió en 1991. El nombre viene del grupo de comedia Monty Python, no de la serpiente.</p>
+</section>
+
+<!-- ================= 2. PRINT ================= -->
+<section class="hoja" id="s-print" data-titulo="Tu primer programa" data-ini="7" data-fin="14">
+  <div class="hoja-cab"><span class="etq">Parte 2 <span class="min">· min 7–14</span></span><h2>Tu primer programa: <code>print</code></h2></div>
+  <div class="texto">
+    <p><code>print</code> es la forma de hacer que la computadora <b>muestre algo en la pantalla</b>. Es lo primero que escribe cualquier persona que aprende a programar. Toca cada pieza para ver qué hace:</p>
+  </div>
+  <div class="anatomia">
+    <div class="anat-linea" id="anat" role="group" aria-label="Partes de la instrucción print"></div>
+    <div class="anat-exp" id="anat-exp" aria-live="polite">Toca una parte de la instrucción.</div>
+  </div>
+  <p class="texto">Ahora córrelo tú. Dale <b>Correr</b>, y luego cambia el texto entre comillas y vuelve a correrlo.</p>
+  <div data-editor="e-hola"></div>
+  <div class="quiz" data-quiz="q-comillas"></div>
+  <div class="reto">
+    <div class="reto-cab"><span class="sello">Tu turno</span><h3>Preséntate</h3></div>
+    <p>Haz un programa que imprima <b>dos renglones</b>: en el primero tu nombre y en el segundo tu comida favorita.</p>
+  </div>
+  <div data-editor="e-reto-print"></div>
+  <div class="idea"><b>Rómpelo a propósito.</b> Borra una comilla o un paréntesis y córrelo. El error no es un regaño: es la computadora diciéndote qué no entendió y en qué renglón. Leer errores es la mitad del trabajo de cualquier programador.</div>
+  <div class="profe">
+    <ul>
+      <li>Di: «print es la boca de la computadora».</li>
+      <li>Que <b>prediga</b> antes de correr: «¿qué crees que va a salir?». Hazlo en toda la clase.</li>
+      <li>Si se traba con las comillas: el texto va entre comillas, los números no.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 3. VARIABLES ================= -->
+<section class="hoja" id="s-variables" data-titulo="Variables" data-ini="14" data-fin="22">
+  <div class="hoja-cab"><span class="etq">Parte 3 <span class="min">· min 14–22</span></span><h2>Variables: cajas con nombre</h2></div>
+  <div class="texto">
+    <p>Una <b>variable</b> es una caja con una etiqueta donde la computadora guarda un dato para usarlo después. El signo <code>=</code> no significa «es igual»: significa <b>«guarda esto en la caja»</b>.</p>
+    <p>Usa <b>Paso a paso</b> y mira cómo se llenan las cajas de la memoria con cada renglón. Antes de cada paso, intenta adivinar qué va a pasar.</p>
+  </div>
+  <div data-editor="e-cajas"></div>
+  <div class="quiz" data-quiz="q-copia"></div>
+  <h3>Texto y números no son lo mismo</h3>
+  <div class="texto">
+    <p>Para Python, <code>"5"</code> entre comillas es un <b>texto</b> (como una palabra) y <code>5</code> sin comillas es un <b>número</b>. Con números, <code>+</code> suma. Con textos, <code>+</code> los pega.</p>
+  </div>
+  <div class="quiz" data-quiz="q-texto"></div>
+  <div class="reto">
+    <div class="reto-cab"><span class="sello">Tu turno</span><h3>La cuenta de la tienda</h3></div>
+    <p>Cambia el renglón de <code>total</code> para que calcule <b>precio por cantidad</b> (en Python, multiplicar es <code>*</code>). El reto se revisa cambiando el precio: tu programa tiene que seguir calculando bien.</p>
+  </div>
+  <div data-editor="e-reto-cuenta"></div>
+  <div class="profe">
+    <ul>
+      <li>Antes de darle «Paso a paso», pregunta: «¿cuánto vale edad al final?».</li>
+      <li>El renglón <code>edad = edad + 1</code> confunde a todos al principio. Léelo de derecha a izquierda: «toma lo que hay en edad, súmale 1 y guárdalo en edad».</li>
+      <li>Si escribe <code>total = 75</code>, el revisor lo detecta: es buen momento para hablar de por qué un programa no debe hacer la cuenta «a mano».</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 4. INPUT ================= -->
+<section class="hoja" id="s-input" data-titulo="Preguntar con input" data-ini="22" data-fin="28">
+  <div class="hoja-cab"><span class="etq">Parte 4 <span class="min">· min 22–28</span></span><h2>El programa te pregunta: <code>input</code></h2></div>
+  <div class="texto">
+    <p><code>input</code> hace una pregunta, espera a que escribas y guarda tu respuesta en una variable. Con eso el programa deja de ser siempre igual: ahora depende de quién lo usa.</p>
+    <p>La <code>f</code> antes de las comillas convierte el texto en un <b>f-string</b>: lo que pongas entre llaves <code>{ }</code> se reemplaza por el valor de esa variable.</p>
+  </div>
+  <div data-editor="e-saludo"></div>
+  <div class="reto">
+    <div class="reto-cab"><span class="sello">Caza el error</span><h3>¿En qué año naciste?</h3></div>
+    <p>Este programa tiene un error. Córrelo, contesta la pregunta y <b>lee el mensaje con calma</b>. Luego arréglalo.</p>
+  </div>
+  <div data-editor="e-reto-anio"></div>
+  <div class="idea"><b>La regla de oro de input:</b> siempre te da un <b>texto</b>, aunque escribas un número. Si quieres hacer cuentas con lo que te contestaron, conviértelo en número con <code>int(...)</code>: <code>edad = int(input("..."))</code>.</div>
+  <div class="profe">
+    <ul>
+      <li>Deja que se tope con el error <b>sin avisarle</b>. Pregunta: «¿qué crees que dice el mensaje?».</li>
+      <li>Si se frustra, dale la pista del botón. Si lo arregla sin ayuda, es una señal fuerte de que esto le puede gustar: anótalo en la rúbrica del final.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 5. IF ================= -->
+<section class="hoja" id="s-if" data-titulo="Decidir con if" data-ini="28" data-fin="38">
+  <div class="hoja-cab"><span class="etq">Parte 5 <span class="min">· min 28–38</span></span><h2>Decisiones: <code>if</code> y <code>else</code></h2></div>
+  <div class="texto">
+    <p>Con <code>if</code> («si») el programa elige un camino según una condición. Mueve la edad y mira qué camino toma:</p>
+  </div>
+  <div class="flujo-zona">
+    <div class="flujo" id="flujo"></div>
+    <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+      <div class="deslizador">
+        <label for="edad-slider">edad <output id="edad-out" for="edad-slider">15</output></label>
+        <input type="range" id="edad-slider" min="0" max="40" value="15">
+      </div>
+      <pre class="codigo" id="flujo-codigo"></pre>
+      <div class="salida-mini" id="flujo-salida" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="texto">
+    <p>Fíjate en dos cosas del código: la línea del <code>if</code> termina con <b>dos puntos</b> <code>:</code>, y lo que va «adentro» lleva <b>sangría</b> (4 espacios a la derecha). Así sabe Python qué renglones pertenecen a cada camino.</p>
+  </div>
+  <pre class="codigo">==   igual a           !=   diferente de
+&lt;    menor que         &gt;    mayor que
+&lt;=   menor o igual     &gt;=   mayor o igual</pre>
+  <p class="texto">Para varios caminos se usa <code>elif</code> («si no, si…»). Python revisa las condiciones de arriba hacia abajo y entra <b>solo en la primera</b> que se cumpla. En paso a paso verás junto a cada condición si salió verdadera o falsa.</p>
+  <div data-editor="e-clima"></div>
+  <div class="quiz" data-quiz="q-clima"></div>
+  <div class="reto">
+    <div class="reto-cab"><span class="sello">Tu turno</span><h3>El semáforo</h3></div>
+    <p>Completa el programa: si el color es <code>"rojo"</code> imprime <b>Alto</b>, si es <code>"amarillo"</code> imprime <b>Precaución</b> y con cualquier otro color imprime <b>Avanza</b>.</p>
+  </div>
+  <div data-editor="e-reto-semaforo"></div>
+  <div class="profe">
+    <ul>
+      <li>Pregunta con el diagrama: «¿qué pasa con 18 exacto?». Luego cambia <code>&gt;=</code> por <code>&gt;</code> en tu cabeza y pregunta otra vez.</li>
+      <li>El error más común aquí es la sangría o los dos puntos. Que lea el mensaje: dice exactamente qué falta.</li>
+      <li>Si escribe «Rojo» con mayúscula, no entra: es buen momento para decir que para Python «Rojo» y «rojo» son textos distintos.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 6. CICLOS ================= -->
+<section class="hoja" id="s-for" data-titulo="Repetir con for" data-ini="38" data-fin="47">
+  <div class="hoja-cab"><span class="etq">Parte 6 <span class="min">· min 38–47</span></span><h2>Repetir: <code>for</code> y <code>while</code></h2></div>
+  <div class="texto">
+    <p>¿Te acuerdas del nivel 3 del robot, donde repetías lo mismo una y otra vez? Para eso existen los <b>ciclos</b>. Con <code>for</code> le dices a la computadora «haz esto con cada número de esta lista».</p>
+    <p><code>range</code> fabrica esa lista de números. Juega con los tres valores:</p>
+  </div>
+  <div class="rango" id="rango"></div>
+  <div class="idea"><b>Ojo:</b> el número final <b>nunca entra</b>. <code>range(1, 6)</code> da 1, 2, 3, 4 y 5. Es la trampa más famosa de Python.</div>
+  <p class="texto">Mira este ciclo paso a paso: la caja <code>i</code> cambia en cada vuelta y la pirámide crece.</p>
+  <div data-editor="e-piramide"></div>
+  <div class="quiz" data-quiz="q-veces"></div>
+  <p class="texto"><code>while</code> («mientras») repite <b>mientras</b> una condición sea verdadera. Sirve cuando no sabes cuántas vueltas van a hacer falta. Esta cuenta regresiva espera un segundo entre número y número:</p>
+  <div data-editor="e-despegue"></div>
+  <div class="reto">
+    <div class="reto-cab"><span class="sello">Tu turno</span><h3>Tu tabla de multiplicar</h3></div>
+    <p>Haz que el programa pida un número e imprima su tabla del 1 al 10, así: <code>7 x 1 = 7</code>, <code>7 x 2 = 14</code>… Pista: dentro del f-string también puedes hacer cuentas, <code>{n * i}</code>.</p>
+  </div>
+  <div data-editor="e-reto-tabla"></div>
+  <div class="profe">
+    <ul>
+      <li>Antes de mostrar el for, pregunta: «¿cómo imprimirías los números del 1 al 100 sin escribir 100 renglones?».</li>
+      <li>Que descubra sola o solo en el explorador que el final no entra. No se lo digas antes.</li>
+      <li>Si el reto sale rápido, pídele la tabla del 1 al 100 cambiando un solo número.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 7. RETO FINAL ================= -->
+<section class="hoja" id="s-juego" data-titulo="Reto final: el juego" data-ini="47" data-fin="56">
+  <div class="hoja-cab"><span class="etq">Parte 7 <span class="min">· min 47–56</span></span><h2>Reto final: arma un juego</h2></div>
+  <div class="texto">
+    <p>Vas a juntar todo lo de hoy en un juego: la computadora piensa un número del 1 al 20 y tú lo adivinas. Ella te dice «más alto» o «más bajo» hasta que le atines.</p>
+    <p>Las primeras cuatro piezas ya están puestas. <b>Toca las piezas de la izquierda en el orden correcto</b> para armar el resto. La sangría ya viene en cada pieza: fíjate en ella, es una pista. Si te equivocas, toca una pieza de tu programa para regresarla.</p>
+  </div>
+  <div class="parsons" id="parsons">
+    <div class="pz-col"><h3>Piezas sueltas</h3><div class="pz-lista" id="pz-sueltas"></div></div>
+    <div class="pz-col"><h3>Tu programa</h3><div class="pz-lista" id="pz-programa"></div></div>
+  </div>
+  <div class="fila">
+    <button class="btn btn-amarillo" type="button" id="pz-probar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>Probar mi juego</button>
+    <button class="btn btn-chico" type="button" id="pz-revolver">Revolver de nuevo</button>
+  </div>
+  <div class="msg" id="pz-msg" aria-live="polite">Coloca las 7 piezas y dale «Probar mi juego». Lo vamos a jugar con un número secreto de prueba.</div>
+  <div id="juego-libre" class="oculto" style="display:flex;flex-direction:column;gap:14px">
+    <p class="nota-mano">¡Funciona! Ahora juégalo de verdad: el número es secreto.</p>
+    <div data-editor="e-juego"></div>
+    <div class="reto">
+      <div class="reto-cab"><span class="sello">Si te sobra tiempo</span><h3>Mejora tu juego</h3></div>
+      <ul>
+        <li>Cuenta los intentos: crea <code>intentos = 0</code> arriba, súmale 1 en cada vuelta y al final imprime cuántos fueron.</li>
+        <li>Hazlo más difícil: del 1 al 100 (cambia dos números).</li>
+        <li>Que te diga «¡Uy, casi!» cuando estés a 2 números o menos del secreto. Pista: <code>abs(intento - secreto) &lt;= 2</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="profe">
+    <ul>
+      <li>No le dictes el orden. Si se atora más de 2 minutos, pregunta: «¿qué tiene que pasar primero, preguntar el número o compararlo?».</li>
+      <li>Cuando funcione, juéguenlo juntos: que adivines tú y que vea su programa funcionando contigo.</li>
+      <li>Si ve el código y empieza a cambiarlo por su cuenta (mensajes, rango), es la mejor señal de toda la clase.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 8. CIERRE ================= -->
+<section class="hoja" id="s-cierre" data-titulo="Cierre" data-ini="56" data-fin="60">
+  <div class="hoja-cab"><span class="etq">Parte 8 <span class="min">· min 56–60</span></span><h2>¿Te late programar?</h2></div>
+  <div class="texto">
+    <p>En una hora usaste las piezas con las que se construye cualquier programa, desde una calculadora hasta una app: <b>mostrar</b> (print), <b>recordar</b> (variables), <b>preguntar</b> (input), <b>decidir</b> (if) y <b>repetir</b> (for y while).</p>
+  </div>
+  <div class="stickers" id="stickers"></div>
+  <h3>Contesta con sinceridad</h3>
+  <p class="texto">Aquí no hay respuestas buenas ni malas. Sirve para saber si vale la pena una segunda clase.</p>
+  <div class="encuesta" id="encuesta"></div>
+  <div class="veredicto oculto" id="veredicto" aria-live="polite"></div>
+  <div class="profe rubrica" id="rubrica">
+    <p class="mano">Lo que observaste (llénalo sin que lo vea):</p>
+  </div>
+  <h3>Si quieres seguir</h3>
+  <div class="recursos">
+    <a class="recurso" href="https://cs50.harvard.edu/python/" target="_blank" rel="noopener"><small>Curso gratis · inglés con subtítulos</small><b>CS50P de Harvard</b>El curso de Python para principiantes de Harvard, con videos y problemas que se revisan solos.</a>
+    <a class="recurso" href="https://es.py4e.com/" target="_blank" rel="noopener"><small>Curso gratis · español</small><b>Python para todos</b>El curso clásico de la Universidad de Michigan, traducido al español.</a>
+    <a class="recurso" href="https://pythontutor.com/" target="_blank" rel="noopener"><small>Herramienta gratis</small><b>Python Tutor</b>Como el «paso a paso» de esta clase, pero con Python completo.</a>
+  </div>
+</section>
+
+<!-- ================= LABORATORIO ================= -->
+<section class="hoja" id="s-lab" data-titulo="Laboratorio libre">
+  <div class="hoja-cab"><span class="etq" style="background:var(--purple)">Extra · sin reloj</span><h2>Laboratorio libre</h2></div>
+  <p class="texto">Un editor para probar lo que se te ocurra. Escoge un ejemplo para empezar o escribe el tuyo.</p>
+  <div class="fila" id="lab-ejemplos"></div>
+  <div data-editor="e-lab"></div>
+  <p class="dato">Esta página trae su propio Python pequeño, hecho para la clase: tiene lo de hoy (print, input, variables, if, for, while, listas, textos, random, math y time) y explica los errores en español. Python completo tiene muchísimo más.</p>
+</section>
+
+<p class="pie">Clase 1 de programación · tu avance se guarda solo en este navegador.</p>
+</div>
+</main>
+
+<script>
+/* ============================================================
+   Mini-Python: un intérprete pequeño de Python escrito en JS.
+   - Sin eval ni WebAssembly: corre dentro del sandbox del Artifact.
+   - Ejecuta con generadores: se puede pausar en cada renglón
+     (modo paso a paso) y esperar un input() del usuario.
+   - Los errores salen en español y para alguien que nunca ha
+     programado.
+   Enteros = BigInt (como Python: 2**100 sale exacto),
+   decimales = number, bool = boolean, None = null, listas = Array.
+   ============================================================ */
+const MiniPy = (() => {
+  'use strict';
+
+  class PyError extends Error {
+    constructor(tipo, linea, mensaje, pista) {
+      super(mensaje);
+      this.tipo = tipo; this.linea = linea; this.pista = pista || '';
+    }
+  }
+  class Romper { }
+  class Seguir { }
+  const ROMPER = new Romper(), SEGUIR = new Seguir();
+
+  const PALABRAS = new Set(['if', 'elif', 'else', 'while', 'for', 'in', 'and', 'or', 'not', 'True', 'False', 'None',
+    'break', 'continue', 'pass', 'import', 'from', 'def', 'return', 'is', 'lambda', 'class', 'try', 'except', 'as', 'with', 'global']);
+
+  const ESPANOL = {
+    imprimir: 'print', escribir: 'print', mostrar: 'print', imprime: 'print', leer: 'input', entrada: 'input',
+    pedir: 'input', si: 'if', sino: 'else', mientras: 'while', para: 'for', verdadero: 'True', falso: 'False',
+    entero: 'int', texto: 'str', largo: 'len', longitud: 'len', rango: 'range'
+  };
+
+  /* ---------------- Tokenizador ---------------- */
+  function tokenizar(src) {
+    src = src.replace(/\r\n?/g, '\n')
+      .replace(/[“”„«»]/g, '"')
+      .replace(/[‘’‚]/g, "'")
+      .replace(/ /g, ' ');
+    if (!src.endsWith('\n')) src += '\n';
+    const toks = [];
+    const sangrias = [0];
+    const abiertos = [];
+    let i = 0, linea = 1, inicio = true;
+    const push = (t, v, extra) => toks.push(Object.assign({ t, v, linea }, extra));
+
+    while (i < src.length) {
+      if (inicio && abiertos.length === 0) {
+        let n = 0, j = i, hayTab = false;
+        while (j < src.length && (src[j] === ' ' || src[j] === '\t')) { if (src[j] === '\t') { n += 4; hayTab = true; } else n++; j++; }
+        if (j >= src.length) break;
+        if (src[j] === '\n' || src[j] === '#') {
+          while (j < src.length && src[j] !== '\n') j++;
+          i = j + 1; linea++; continue;
+        }
+        const tope = sangrias[sangrias.length - 1];
+        if (n > tope) { sangrias.push(n); push('INDENT'); }
+        else if (n < tope) {
+          while (n < sangrias[sangrias.length - 1]) { sangrias.pop(); push('DEDENT'); }
+          if (n !== sangrias[sangrias.length - 1])
+            throw new PyError('IndentationError', linea,
+              'La sangría (los espacios al inicio) de este renglón no coincide con ningún bloque de arriba.',
+              'Alinéalo exactamente con el renglón con el que debe ir: mismos espacios. Lo normal es usar 4.');
+        }
+        i = j; inicio = false; continue;
+      }
+      const c = src[i];
+      if (c === '\n') {
+        if (abiertos.length === 0) { push('NL'); inicio = true; }
+        linea++; i++; continue;
+      }
+      if (c === ' ' || c === '\t') { i++; continue; }
+      if (c === '#') { while (src[i] !== '\n') i++; continue; }
+      if (c === '\\' && src[i + 1] === '\n') { i += 2; linea++; continue; }
+
+      if (/[0-9]/.test(c) || (c === '.' && /[0-9]/.test(src[i + 1]))) {
+        const m = /^(?:\d[\d_]*)?(?:\.\d[\d_]*|\.)?(?:[eE][+-]?\d+)?/.exec(src.slice(i));
+        let txt = m[0];
+        if (txt === '.' ) { push('OP', '.'); i++; continue; }
+        const limpio = txt.replace(/_/g, '');
+        if (/[.eE]/.test(limpio)) push('NUM', parseFloat(limpio));
+        else push('NUM', BigInt(limpio));
+        i += txt.length;
+        if (/[\p{L}_]/u.test(src[i] || ''))
+          throw new PyError('SyntaxError', linea, 'Un nombre de variable no puede empezar con un número.',
+            'Pon primero letras: por ejemplo «edad2» en vez de «2edad».');
+        continue;
+      }
+
+      if (/[\p{L}_]/u.test(c)) {
+        let j = i;
+        while (j < src.length && /[\p{L}\p{N}_]/u.test(src[j])) j++;
+        const nombre = src.slice(i, j);
+        if ((nombre === 'f' || nombre === 'F') && (src[j] === '"' || src[j] === "'")) {
+          i = j; const s = leerTexto(); push('FSTR', s.v); continue;
+        }
+        i = j;
+        if (PALABRAS.has(nombre)) push('KW', nombre); else push('NAME', nombre);
+        continue;
+      }
+
+      if (c === '"' || c === "'") { const s = leerTexto(); push('STR', s.v); continue; }
+
+      const dos = src.substr(i, 2), tres = src.substr(i, 3);
+      if (['**=', '//='].includes(tres)) { push('OP', tres); i += 3; continue; }
+      if (['**', '//', '==', '!=', '<=', '>=', '+=', '-=', '*=', '/=', '%='].includes(dos)) { push('OP', dos); i += 2; continue; }
+      if ('+-*/%<>=()[]{},:.;'.includes(c)) {
+        if ('([{'.includes(c)) abiertos.push({ c, linea });
+        if (')]}'.includes(c)) {
+          const par = { ')': '(', ']': '[', '}': '{' }[c];
+          const top = abiertos.pop();
+          if (!top) throw new PyError('SyntaxError', linea, `Sobra un «${c}»: no hay ningún «${par}» abierto antes.`, 'Borra ese símbolo o abre el que falta.');
+          if (top.c !== par) throw new PyError('SyntaxError', linea, `Abriste «${top.c}» y lo cerraste con «${c}».`, 'Los paréntesis ( ) y los corchetes [ ] se cierran con su pareja.');
+        }
+        push('OP', c); i++; continue;
+      }
+      if (c === '!') throw new PyError('SyntaxError', linea, 'En Python el «!» solo va en «!=» (diferente de).', 'Para negar algo se usa la palabra «not».');
+      if (c === '&' || c === '|') throw new PyError('SyntaxError', linea, `En Python no se usa «${c}${c}». Se escribe con palabras: «and» y «or».`);
+      throw new PyError('SyntaxError', linea, `No entiendo el símbolo «${c}».`, 'Bórralo o revisa que esté escrito igual que en el ejemplo.');
+    }
+    if (abiertos.length) {
+      const a = abiertos[abiertos.length - 1];
+      const cierra = { '(': ')', '[': ']', '{': '}' }[a.c];
+      throw new PyError('SyntaxError', a.linea, `Abriste un «${a.c}» en este renglón y nunca lo cerraste.`, `Agrega el «${cierra}» que falta al final.`);
+    }
+    if (toks.length && toks[toks.length - 1].t !== 'NL') push('NL');
+    while (sangrias.length > 1) { sangrias.pop(); push('DEDENT'); }
+    push('EOF');
+    return toks;
+
+    function leerTexto() {
+      let q = src[i];
+      let triple = src.substr(i, 3) === q + q + q;
+      const lineaIni = linea;
+      i += triple ? 3 : 1;
+      let v = '';
+      while (true) {
+        if (i >= src.length) throw new PyError('SyntaxError', lineaIni, 'Abriste comillas y nunca las cerraste.', `Pon otra ${q} al final del texto.`);
+        const ch = src[i];
+        if (!triple && ch === '\n') throw new PyError('SyntaxError', lineaIni, 'Abriste comillas y no las cerraste en este renglón.', `El texto tiene que terminar con la misma comilla con que empezó: ${q}`);
+        if (triple && src.substr(i, 3) === q + q + q) { i += 3; break; }
+        if (!triple && ch === q) { i++; break; }
+        if (ch === '\\') {
+          const n = src[i + 1];
+          const mapa = { n: '\n', t: '\t', '\\': '\\', "'": "'", '"': '"', '\n': '' };
+          if (n in mapa) { v += mapa[n]; if (n === '\n') linea++; i += 2; continue; }
+          v += ch; i++; continue;
+        }
+        if (ch === '\n') linea++;
+        v += ch; i++;
+      }
+      return { v };
+    }
+  }
+
+  /* ---------------- Parser ---------------- */
+  function analizar(src) {
+    const toks = tokenizar(src);
+    let p = 0;
+    const ver = () => toks[p];
+    const sig = () => toks[p++];
+    const es = (t, v) => { const k = toks[p]; return k.t === t && (v === undefined || k.v === v); };
+    const describe = (k) => k.t === 'NL' || k.t === 'EOF' ? 'el final del renglón' : k.t === 'INDENT' ? 'una sangría' :
+      k.t === 'STR' ? 'un texto' : k.t === 'NUM' ? 'un número' : `«${k.v}»`;
+    const err = (linea, msg, pista) => new PyError('SyntaxError', linea, msg, pista);
+
+    function programa() {
+      const cuerpo = [];
+      while (!es('EOF')) {
+        if (es('NL')) { sig(); continue; }
+        if (es('DEDENT')) { sig(); continue; }
+        cuerpo.push(sentencia());
+      }
+      return cuerpo;
+    }
+    function bloque(lineaCab, kw) {
+      if (!es('NL')) { const s = simple(); finRenglon(); return [s]; }
+      sig();
+      while (es('NL')) sig();
+      if (!es('INDENT')) throw new PyError('IndentationError', ver().t === 'EOF' ? lineaCab : ver().linea,
+        `Después de los dos puntos «:» del ${kw} (renglón ${lineaCab}) tiene que venir un renglón con sangría.`,
+        'Mueve ese renglón 4 espacios a la derecha: así Python sabe que está «dentro» del ' + kw + '.');
+      sig();
+      const cuerpo = [];
+      while (!es('DEDENT') && !es('EOF')) {
+        if (es('NL')) { sig(); continue; }
+        cuerpo.push(sentencia());
+      }
+      if (es('DEDENT')) sig();
+      return cuerpo;
+    }
+    function dosPuntos(kw, linea) {
+      if (es('OP', '=')) throw err(linea, 'Para comparar se usan dos iguales: «==».', 'Un solo «=» sirve para guardar un valor en una variable.');
+      if (!es('OP', ':')) throw err(linea, `Al ${kw} le faltan los dos puntos «:» al final del renglón.`, `Ejemplo: ${kw === 'else' ? 'else:' : kw + ' ... :'}`);
+      sig();
+    }
+    function finRenglon() {
+      if (es('OP', ';')) { sig(); }
+      if (es('EOF')) return;
+      if (!es('NL')) {
+        const k = ver();
+        throw err(k.linea, `No esperaba ${describe(k)} aquí.`, '¿Te faltó una coma, un operador (+, -) o cerrar algo?');
+      }
+      sig();
+    }
+    function sentencia() {
+      const k = ver();
+      if (k.t === 'INDENT') throw new PyError('IndentationError', k.linea, 'Este renglón tiene sangría (espacios al inicio) y no debería.',
+        'Solo llevan sangría los renglones que van dentro de un if, for o while. Quítale los espacios del inicio.');
+      if (k.t === 'KW') {
+        if (k.v === 'if') return siStmt();
+        if (k.v === 'while') {
+          const l = sig().linea; const cond = expr(); dosPuntos('while', l);
+          return { k: 'while', linea: l, cond, cuerpo: bloque(l, 'while') };
+        }
+        if (k.v === 'for') {
+          const l = sig().linea;
+          if (!es('NAME')) throw err(l, 'Después de «for» va el nombre de una variable.', 'Ejemplo: for i in range(5):');
+          const nombre = sig().v;
+          if (!es('KW', 'in')) throw err(l, 'Al for le falta la palabra «in».', 'Ejemplo: for i in range(5):');
+          sig();
+          const iter = expr(); dosPuntos('for', l);
+          return { k: 'for', linea: l, nombre, iter, cuerpo: bloque(l, 'for') };
+        }
+        if (k.v === 'elif' || k.v === 'else') throw err(k.linea, `Este «${k.v}» no tiene un if arriba con la misma sangría.`,
+          `El ${k.v} tiene que ir alineado exactamente con su if.`);
+        if (k.v === 'def' || k.v === 'class' || k.v === 'return' || k.v === 'try' || k.v === 'lambda')
+          throw err(k.linea, `«${k.v}» es Python de verdad, pero en esta clase todavía no lo usamos.`, 'Eso queda para la siguiente clase.');
+      }
+      const s = simple(); finRenglon(); return s;
+    }
+    function siStmt() {
+      const l = sig().linea; const cond = expr(); dosPuntos('if', l);
+      const pruebas = [{ cond, cuerpo: bloque(l, 'if'), linea: l }];
+      let sino = null, lineaSino = 0;
+      while (es('KW', 'elif')) {
+        const le = sig().linea; const c = expr(); dosPuntos('elif', le);
+        pruebas.push({ cond: c, cuerpo: bloque(le, 'elif'), linea: le });
+      }
+      if (es('KW', 'else')) { lineaSino = sig().linea; dosPuntos('else', lineaSino); sino = bloque(lineaSino, 'else'); }
+      return { k: 'if', linea: l, pruebas, sino, lineaSino };
+    }
+    function simple() {
+      const k = ver();
+      if (k.t === 'KW' && k.v === 'pass') { sig(); return { k: 'pass', linea: k.linea }; }
+      if (k.t === 'KW' && k.v === 'break') { sig(); return { k: 'break', linea: k.linea }; }
+      if (k.t === 'KW' && k.v === 'continue') { sig(); return { k: 'continue', linea: k.linea }; }
+      if (k.t === 'KW' && k.v === 'import') {
+        sig(); const mods = [];
+        do { if (!es('NAME')) throw err(k.linea, 'Después de import va el nombre de un módulo.', 'Ejemplo: import random'); mods.push(sig().v); } while (es('OP', ',') && sig());
+        return { k: 'import', linea: k.linea, mods };
+      }
+      if (k.t === 'KW' && k.v === 'from') {
+        sig(); if (!es('NAME')) throw err(k.linea, 'Después de from va el nombre de un módulo.');
+        const mod = sig().v;
+        if (!es('KW', 'import')) throw err(k.linea, 'Falta la palabra import.', 'Ejemplo: from random import randint');
+        sig(); const nombres = [];
+        do { if (!es('NAME')) throw err(k.linea, 'Falta qué importar.'); nombres.push(sig().v); } while (es('OP', ',') && sig());
+        return { k: 'from', linea: k.linea, mod, nombres };
+      }
+      const izq = expr();
+      if (es('OP', '=')) {
+        const l = sig().linea;
+        if (izq.k !== 'nombre' && izq.k !== 'indice')
+          throw err(l, 'Del lado izquierdo del «=» va el nombre de una variable.',
+            izq.k === 'num' || izq.k === 'str' ? 'Se escribe al revés: primero el nombre y luego el valor, por ejemplo: edad = 20' : 'Ejemplo: nombre = "Ana"');
+        if (es('NL') || es('EOF')) throw err(l, 'Después del «=» falta el valor que quieres guardar.');
+        const valor = expr();
+        if (es('OP', '=')) throw err(l, 'Hay dos «=» en el mismo renglón.', 'Si querías comparar, eso va dentro de un if y con «==».');
+        return { k: 'asigna', linea: l, objetivo: izq, valor };
+      }
+      if (ver().t === 'OP' && ['+=', '-=', '*=', '/=', '//=', '%=', '**='].includes(ver().v)) {
+        const op = sig();
+        if (izq.k !== 'nombre' && izq.k !== 'indice') throw err(op.linea, `Antes de «${op.v}» va el nombre de una variable.`);
+        return { k: 'aumenta', linea: op.linea, objetivo: izq, op: op.v.slice(0, -1), valor: expr() };
+      }
+      if (izq.k === 'nombre' && (es('STR') || es('NAME') || es('NUM') || es('FSTR')))
+        throw err(ver().linea, `Después de «${izq.n}» esperaba un paréntesis.`, `Se escribe así: ${izq.n}("Hola")`);
+      return { k: 'expr', linea: k.linea, e: izq };
+    }
+
+    function expr() { return o(); }
+    function o() {
+      let a = y();
+      while (es('KW', 'or')) { const l = sig().linea; a = { k: 'o', a, b: y(), linea: l }; }
+      return a;
+    }
+    function y() {
+      let a = no();
+      while (es('KW', 'and')) { const l = sig().linea; a = { k: 'y', a, b: no(), linea: l }; }
+      return a;
+    }
+    function no() {
+      if (es('KW', 'not')) { const l = sig().linea; return { k: 'no', a: no(), linea: l }; }
+      return comparacion();
+    }
+    function comparacion() {
+      const primero = aritmetica();
+      const ops = [], vals = [primero];
+      while (true) {
+        const k = ver();
+        let op = null;
+        if (k.t === 'OP' && ['==', '!=', '<', '>', '<=', '>='].includes(k.v)) { sig(); op = k.v; }
+        else if (k.t === 'KW' && k.v === 'in') { sig(); op = 'in'; }
+        else if (k.t === 'KW' && k.v === 'not' && toks[p + 1].t === 'KW' && toks[p + 1].v === 'in') { sig(); sig(); op = 'not in'; }
+        else if (k.t === 'KW' && k.v === 'is') { sig(); if (es('KW', 'not')) { sig(); op = 'is not'; } else op = 'is'; }
+        else break;
+        ops.push(op); vals.push(aritmetica());
+      }
+      return ops.length ? { k: 'cmp', ops, vals, linea: primero.linea } : primero;
+    }
+    function aritmetica() {
+      let a = termino();
+      while (ver().t === 'OP' && (ver().v === '+' || ver().v === '-')) { const op = sig(); a = { k: 'bin', op: op.v, a, b: termino(), linea: op.linea }; }
+      return a;
+    }
+    function termino() {
+      let a = unario();
+      while (ver().t === 'OP' && ['*', '/', '//', '%'].includes(ver().v)) { const op = sig(); a = { k: 'bin', op: op.v, a, b: unario(), linea: op.linea }; }
+      return a;
+    }
+    function unario() {
+      if (ver().t === 'OP' && (ver().v === '-' || ver().v === '+')) { const op = sig(); return { k: 'un', op: op.v, a: unario(), linea: op.linea }; }
+      return potencia();
+    }
+    function potencia() {
+      const a = postfijo();
+      if (es('OP', '**')) { const op = sig(); return { k: 'bin', op: '**', a, b: unario(), linea: op.linea }; }
+      return a;
+    }
+    function postfijo() {
+      let a = atomo();
+      while (true) {
+        if (es('OP', '(')) {
+          const l = sig().linea; const args = [], kw = {};
+          while (!es('OP', ')')) {
+            if (es('NAME') && toks[p + 1].t === 'OP' && toks[p + 1].v === '=') { const n = sig().v; sig(); kw[n] = expr(); }
+            else args.push(expr());
+            if (es('OP', ',')) { sig(); continue; }
+            if (!es('OP', ')')) {
+              const k = ver();
+              throw err(k.linea, `Dentro de los paréntesis esperaba una coma o «)», pero encontré ${describe(k)}.`,
+                k.t === 'STR' || k.t === 'NAME' || k.t === 'NUM' || k.t === 'FSTR' ? 'Si son varias cosas, sepáralas con comas: print("Hola", nombre)' : 'Revisa que cierres el paréntesis.');
+            }
+          }
+          sig();
+          a = { k: 'llamada', f: a, args, kw, linea: l };
+        } else if (es('OP', '[')) {
+          const l = sig().linea;
+          let ini = null, fin = null, paso = null, rebanada = false;
+          if (!es('OP', ':')) ini = expr();
+          if (es('OP', ':')) {
+            rebanada = true; sig();
+            if (!es('OP', ']') && !es('OP', ':')) fin = expr();
+            if (es('OP', ':')) { sig(); if (!es('OP', ']')) paso = expr(); }
+          }
+          if (!es('OP', ']')) throw err(l, 'Falta cerrar el corchete «]».');
+          sig();
+          a = rebanada ? { k: 'rebanada', obj: a, ini, fin, paso, linea: l } : { k: 'indice', obj: a, i: ini, linea: l };
+        } else if (es('OP', '.')) {
+          const l = sig().linea;
+          if (!es('NAME')) throw err(l, 'Después del punto va el nombre de un método.', 'Ejemplo: nombre.upper()');
+          a = { k: 'attr', obj: a, n: sig().v, linea: l };
+        } else break;
+      }
+      return a;
+    }
+    function atomo() {
+      const k = ver();
+      if (k.t === 'NUM') { sig(); return { k: 'num', v: k.v, linea: k.linea }; }
+      if (k.t === 'STR') {
+        sig(); let v = k.v;
+        while (es('STR')) v += sig().v;
+        return { k: 'str', v, linea: k.linea };
+      }
+      if (k.t === 'FSTR') { sig(); return { k: 'fstr', partes: partirF(k.v, k.linea), linea: k.linea }; }
+      if (k.t === 'NAME') { sig(); return { k: 'nombre', n: k.v, linea: k.linea }; }
+      if (k.t === 'KW' && (k.v === 'True' || k.v === 'False')) { sig(); return { k: 'const', v: k.v === 'True', linea: k.linea }; }
+      if (k.t === 'KW' && k.v === 'None') { sig(); return { k: 'const', v: null, linea: k.linea }; }
+      if (es('OP', '(')) {
+        sig(); const e = expr();
+        if (es('OP', ',')) throw err(k.linea, 'Esta mini-Python no usa tuplas (valores separados por coma entre paréntesis).', 'Usa una lista con corchetes: [1, 2, 3]');
+        if (!es('OP', ')')) throw err(k.linea, 'Falta cerrar el paréntesis «)».');
+        sig(); return e;
+      }
+      if (es('OP', '[')) {
+        sig(); const items = [];
+        while (!es('OP', ']')) {
+          items.push(expr());
+          if (es('OP', ',')) { sig(); continue; }
+          if (!es('OP', ']')) throw err(k.linea, 'En una lista los elementos van separados por comas.', 'Ejemplo: frutas = ["mango", "pera"]');
+        }
+        sig(); return { k: 'lista', items, linea: k.linea };
+      }
+      if (es('OP', '{')) throw err(k.linea, 'Las llaves { } (diccionarios) quedan para otra clase.', 'Por hoy usa listas con corchetes [ ].');
+      if (k.t === 'NL' || k.t === 'EOF') throw err(k.linea, 'El renglón se acabó antes de tiempo: falta algo al final.', '¿Te faltó un número, un texto o una variable después del operador?');
+      if (k.t === 'KW') throw err(k.linea, `«${k.v}» es una palabra reservada de Python y no puede ir aquí.`, k.v === 'in' || k.v === 'is' || k.v === 'and' || k.v === 'or' ? 'Falta algo antes de ella.' : 'Si querías una variable, ponle otro nombre.');
+      throw err(k.linea, `No esperaba ${describe(k)} aquí.`);
+    }
+    function partirF(txt, linea) {
+      const partes = [];
+      let i = 0, lit = '';
+      while (i < txt.length) {
+        const c = txt[i];
+        if (c === '{' && txt[i + 1] === '{') { lit += '{'; i += 2; continue; }
+        if (c === '}' && txt[i + 1] === '}') { lit += '}'; i += 2; continue; }
+        if (c === '{') {
+          if (lit) { partes.push(lit); lit = ''; }
+          let j = i + 1, prof = 0, comilla = null;
+          while (j < txt.length) {
+            const d = txt[j];
+            if (comilla) { if (d === comilla) comilla = null; }
+            else if (d === '"' || d === "'") comilla = d;
+            else if (d === '(' || d === '[') prof++;
+            else if (d === ')' || d === ']') prof--;
+            else if (d === '}' && prof === 0) break;
+            j++;
+          }
+          if (j >= txt.length) throw new PyError('SyntaxError', linea, 'En el f-string abriste una llave «{» y no la cerraste.', 'Cada {variable} lleva su llave de cierre.');
+          let dentro = txt.slice(i + 1, j), formato = '';
+          const dp = buscarDosPuntos(dentro);
+          if (dp >= 0) { formato = dentro.slice(dp + 1); dentro = dentro.slice(0, dp); }
+          if (!dentro.trim()) throw new PyError('SyntaxError', linea, 'En el f-string hay unas llaves { } vacías.', 'Adentro va el nombre de una variable: {nombre}');
+          let sub;
+          try { sub = analizarExpr(dentro); }
+          catch (e) { if (e instanceof PyError) { e.linea = linea; } throw e; }
+          partes.push({ e: sub, formato });
+          i = j + 1; continue;
+        }
+        if (c === '}') throw new PyError('SyntaxError', linea, 'En el f-string hay una llave «}» que sobra.');
+        lit += c; i++;
+      }
+      if (lit) partes.push(lit);
+      return partes;
+    }
+    function buscarDosPuntos(s) {
+      let prof = 0, comilla = null;
+      for (let i = 0; i < s.length; i++) {
+        const d = s[i];
+        if (comilla) { if (d === comilla) comilla = null; continue; }
+        if (d === '"' || d === "'") comilla = d;
+        else if (d === '(' || d === '[') prof++;
+        else if (d === ')' || d === ']') prof--;
+        else if (d === ':' && prof === 0) return i;
+      }
+      return -1;
+    }
+    const cuerpo = programa();
+    return cuerpo;
+  }
+  function analizarExpr(src) {
+    const ast = analizar(src);
+    if (ast.length !== 1 || ast[0].k !== 'expr') throw new PyError('SyntaxError', 1, 'Dentro de las llaves del f-string solo va una variable o una cuenta.');
+    return ast[0].e;
+  }
+
+  /* ---------------- Valores ---------------- */
+  class Rango { constructor(a, b, c) { this.a = a; this.b = b; this.c = c; }
+    largo() { const { a, b, c } = this; if (c > 0n) return a < b ? (b - a + c - 1n) / c : 0n; return a > b ? (a - b - c - 1n) / (-c) : 0n; }
+    *[Symbol.iterator]() { const { a, b, c } = this; if (c > 0n) for (let x = a; x < b; x += c) yield x; else for (let x = a; x > b; x += c) yield x; }
+  }
+  class Builtin { constructor(nombre, fn) { this.nombre = nombre; this.fn = fn; } }
+  class Metodo { constructor(obj, nombre) { this.obj = obj; this.nombre = nombre; } }
+  class Modulo { constructor(nombre, attrs) { this.nombre = nombre; this.attrs = attrs; } }
+  class Tipo { constructor(nombre) { this.nombre = nombre; } }
+
+  function tipoDe(v) {
+    if (v === null) return 'NoneType';
+    if (typeof v === 'bigint') return 'int';
+    if (typeof v === 'number') return 'float';
+    if (typeof v === 'boolean') return 'bool';
+    if (typeof v === 'string') return 'str';
+    if (Array.isArray(v)) return 'list';
+    if (v instanceof Rango) return 'range';
+    if (v instanceof Builtin || v instanceof Metodo) return 'builtin_function_or_method';
+    if (v instanceof Modulo) return 'module';
+    if (v instanceof Tipo) return 'type';
+    return 'object';
+  }
+  const NOMBRE_TIPO = { int: 'número entero (int)', float: 'número decimal (float)', str: 'texto (str)', bool: 'booleano (bool)', list: 'lista (list)', NoneType: 'None', range: 'range' };
+  const nt = (v) => NOMBRE_TIPO[tipoDe(v)] || tipoDe(v);
+
+  function flotante(x) {
+    if (Number.isNaN(x)) return 'nan';
+    if (!Number.isFinite(x)) return x > 0 ? 'inf' : '-inf';
+    if (x === 0) return Object.is(x, -0) ? '-0.0' : '0.0';
+    const e = Math.floor(Math.log10(Math.abs(x)));
+    if (e < -4 || e >= 16) {
+      let s = x.toExponential();
+      s = s.replace(/e([+-])(\d)$/, 'e$10$2');
+      return s;
+    }
+    const s = String(x);
+    if (/e/.test(s)) return x.toFixed(20).replace(/0+$/, '');
+    return Number.isInteger(x) ? s + '.0' : s;
+  }
+  function repr(v) {
+    if (typeof v === 'string') {
+      const q = v.includes("'") && !v.includes('"') ? '"' : "'";
+      let s = v.replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/\t/g, '\\t');
+      if (q === "'") s = s.replace(/'/g, "\\'");
+      return q + s + q;
+    }
+    if (Array.isArray(v)) return '[' + v.map(repr).join(', ') + ']';
+    return str(v);
+  }
+  function str(v) {
+    if (v === null) return 'None';
+    if (v === true) return 'True';
+    if (v === false) return 'False';
+    if (typeof v === 'bigint') return v.toString();
+    if (typeof v === 'number') return flotante(v);
+    if (typeof v === 'string') return v;
+    if (Array.isArray(v)) return repr(v);
+    if (v instanceof Rango) return v.c === 1n ? `range(${v.a}, ${v.b})` : `range(${v.a}, ${v.b}, ${v.c})`;
+    if (v instanceof Builtin) return `<built-in function ${v.nombre}>`;
+    if (v instanceof Metodo) return `<built-in method ${v.nombre}>`;
+    if (v instanceof Modulo) return `<module '${v.nombre}'>`;
+    if (v instanceof Tipo) return `<class '${v.nombre}'>`;
+    return String(v);
+  }
+  function verdad(v) {
+    if (v === null || v === false) return false;
+    if (v === true) return true;
+    if (typeof v === 'bigint') return v !== 0n;
+    if (typeof v === 'number') return v !== 0;
+    if (typeof v === 'string' || Array.isArray(v)) return v.length > 0;
+    if (v instanceof Rango) return v.largo() > 0n;
+    return true;
+  }
+  const esNum = (v) => typeof v === 'bigint' || typeof v === 'number' || typeof v === 'boolean';
+  const aEntero = (v) => typeof v === 'boolean' ? (v ? 1n : 0n) : v;
+  const aNum = (v) => typeof v === 'number' ? v : Number(aEntero(v));
+
+  function igual(a, b) {
+    if (esNum(a) && esNum(b)) {
+      a = aEntero(a); b = aEntero(b);
+      if (typeof a === 'bigint' && typeof b === 'bigint') return a === b;
+      return aNum(a) === aNum(b);
+    }
+    if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((x, i) => igual(x, b[i]));
+    return a === b;
+  }
+
+  function binop(op, a, b, linea) {
+    if (op === '+') {
+      if (typeof a === 'string' && typeof b === 'string') return a + b;
+      if (Array.isArray(a) && Array.isArray(b)) return a.concat(b);
+      if (esNum(a) && esNum(b)) return arit(op, a, b, linea);
+      if ((typeof a === 'string' && esNum(b)) || (esNum(a) && typeof b === 'string'))
+        throw new PyError('TypeError', linea, `No puedo sumar ${nt(a)} con ${nt(b)}.`,
+          typeof a === 'string' && typeof b === 'string' ? '' : 'Si querías pegar un número a un texto, conviértelo con str(...), o usa un f-string: f"Tienes {edad} años". Si querías sumar números y uno vino de input(), conviértelo con int(...).');
+      throw new PyError('TypeError', linea, `No puedo sumar ${nt(a)} con ${nt(b)}.`);
+    }
+    if (op === '*') {
+      if (typeof a === 'string' && esNum(b) && typeof aEntero(b) === 'bigint') return a.repeat(Math.max(0, Number(aEntero(b))));
+      if (esNum(a) && typeof aEntero(a) === 'bigint' && typeof b === 'string') return b.repeat(Math.max(0, Number(aEntero(a))));
+      if (Array.isArray(a) && esNum(b) && typeof aEntero(b) === 'bigint') { let r = []; for (let i = 0n; i < aEntero(b); i++) r = r.concat(a); return r; }
+      if (typeof a === 'string' && typeof b === 'string') throw new PyError('TypeError', linea, 'No puedo multiplicar un texto por otro texto.', '¿Uno de los dos vino de input()? Conviértelo con int(...).');
+      if (typeof a === 'string' || typeof b === 'string') throw new PyError('TypeError', linea, `No puedo multiplicar ${nt(a)} por ${nt(b)}.`, 'Un texto solo se puede multiplicar por un número entero: "ja" * 3 da "jajaja".');
+    }
+    if (esNum(a) && esNum(b)) return arit(op, a, b, linea);
+    const signo = { '-': 'una resta', '/': 'una división', '//': 'una división', '%': 'un residuo', '**': 'una potencia', '*': 'una multiplicación' }[op] || 'esa operación';
+    throw new PyError('TypeError', linea, `No puedo hacer ${signo} entre ${nt(a)} y ${nt(b)}.`,
+      typeof a === 'string' || typeof b === 'string' ? 'Las cuentas son con números. Si el dato vino de input(), conviértelo con int(...) o float(...).' : '');
+  }
+  function arit(op, a, b, linea) {
+    a = aEntero(a); b = aEntero(b);
+    const enteros = typeof a === 'bigint' && typeof b === 'bigint';
+    const cero = enteros ? b === 0n : aNum(b) === 0;
+    if ((op === '/' || op === '//' || op === '%') && cero)
+      throw new PyError('ZeroDivisionError', linea, 'No se puede dividir entre cero.', 'Revisa qué valor tiene el número de abajo de la división.');
+    if (enteros) {
+      switch (op) {
+        case '+': return a + b; case '-': return a - b; case '*': return a * b;
+        case '/': return Number(a) / Number(b);
+        case '//': { const q = a / b; return (a % b !== 0n && ((a < 0n) !== (b < 0n))) ? q - 1n : q; }
+        case '%': { const r = a % b; return (r !== 0n && ((r < 0n) !== (b < 0n))) ? r + b : r; }
+        case '**':
+          if (b < 0n) return Math.pow(Number(a), Number(b));
+          if (b > 100000n) throw new PyError('OverflowError', linea, 'Ese número es demasiado grande hasta para Python en el navegador.');
+          return a ** b;
+      }
+    }
+    const x = aNum(a), y = aNum(b);
+    switch (op) {
+      case '+': return x + y; case '-': return x - y; case '*': return x * y; case '/': return x / y;
+      case '//': return Math.floor(x / y);
+      case '%': { const r = x % y; return (r !== 0 && ((r < 0) !== (y < 0))) ? r + y : r; }
+      case '**': return Math.pow(x, y);
+    }
+  }
+  function compara(op, a, b, linea) {
+    switch (op) {
+      case '==': return igual(a, b);
+      case '!=': return !igual(a, b);
+      case 'is': return a === b || (a === null && b === null);
+      case 'is not': return !(a === b);
+      case 'in': case 'not in': {
+        let r;
+        if (typeof b === 'string') {
+          if (typeof a !== 'string') throw new PyError('TypeError', linea, 'Para buscar dentro de un texto, lo que buscas también tiene que ser texto.');
+          r = b.includes(a);
+        } else if (Array.isArray(b)) r = b.some((x) => igual(x, a));
+        else if (b instanceof Rango) r = esNum(a) && [...b].some((x) => igual(x, a));
+        else throw new PyError('TypeError', linea, `No puedo buscar dentro de ${nt(b)} con «in».`);
+        return op === 'in' ? r : !r;
+      }
+    }
+    if (esNum(a) && esNum(b)) {
+      a = aEntero(a); b = aEntero(b);
+      if (typeof a === 'bigint' && typeof b === 'bigint') {
+        switch (op) { case '<': return a < b; case '>': return a > b; case '<=': return a <= b; case '>=': return a >= b; }
+      }
+      const x = aNum(a), y = aNum(b);
+      switch (op) { case '<': return x < y; case '>': return x > y; case '<=': return x <= y; case '>=': return x >= y; }
+    }
+    if (typeof a === 'string' && typeof b === 'string') {
+      switch (op) { case '<': return a < b; case '>': return a > b; case '<=': return a <= b; case '>=': return a >= b; }
+    }
+    throw new PyError('TypeError', linea, `No puedo comparar ${nt(a)} con ${nt(b)} usando «${op}».`,
+      typeof a === 'string' || typeof b === 'string' ? 'Seguro uno de los dos vino de input() y es texto. Conviértelo: int(input("..."))' : '');
+  }
+
+  function indiceReal(seq, i, linea, paraAsignar) {
+    i = aEntero(i);
+    if (typeof i !== 'bigint') throw new PyError('TypeError', linea, `El índice entre corchetes tiene que ser un número entero, no ${nt(i)}.`);
+    const n = seq.length;
+    let k = Number(i);
+    if (k < 0) k += n;
+    if (k < 0 || k >= n) {
+      const que = typeof seq === 'string' ? `El texto tiene ${n} letra${n === 1 ? '' : 's'}` : `La lista tiene ${n} elemento${n === 1 ? '' : 's'}`;
+      throw new PyError('IndexError', linea, `${que}: la posición ${i} no existe.`,
+        n ? `Las posiciones van de 0 a ${n - 1}: se empieza a contar desde 0.` : 'Está vacía: todavía no tiene nada adentro.');
+    }
+    return k;
+  }
+
+  function aEnteroPy(v, linea) {
+    if (typeof v === 'bigint') return v;
+    if (typeof v === 'boolean') return v ? 1n : 0n;
+    if (typeof v === 'number') {
+      if (!Number.isFinite(v)) throw new PyError('ValueError', linea, 'No puedo convertir infinito en número entero.');
+      return BigInt(Math.trunc(v));
+    }
+    if (typeof v === 'string') {
+      const t = v.trim().replace(/_/g, '');
+      if (/^[+-]?\d+$/.test(t)) return BigInt(t);
+      if (/^[+-]?\d*\.\d+$/.test(t)) throw new PyError('ValueError', linea, `int() no acepta decimales escritos como texto: '${v}'.`, 'Para números con punto usa float(...).');
+      throw new PyError('ValueError', linea, v.trim() === '' ? 'int() recibió un texto vacío: no se escribió ningún número.' : `No puedo convertir '${v}' en número entero.`,
+        'Escribe solo dígitos, por ejemplo 25.');
+    }
+    throw new PyError('TypeError', linea, `int() no puede convertir ${nt(v)}.`);
+  }
+  function aFloatPy(v, linea) {
+    if (typeof v === 'number') return v;
+    if (esNum(v)) return aNum(v);
+    if (typeof v === 'string') {
+      const t = v.trim().replace(/_/g, '');
+      if (/^[+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?$/.test(t)) return parseFloat(t);
+      if (/^[+-]?inf(inity)?$/i.test(t)) return t.startsWith('-') ? -Infinity : Infinity;
+      if (/^\d+,\d+$/.test(t)) throw new PyError('ValueError', linea, `No puedo convertir '${v}' en número decimal.`, 'En Python los decimales llevan punto, no coma: 3.5');
+      throw new PyError('ValueError', linea, `No puedo convertir '${v}' en número decimal.`, 'Escribe un número, por ejemplo 3.5');
+    }
+    throw new PyError('TypeError', linea, `float() no puede convertir ${nt(v)}.`);
+  }
+  function iterable(v, linea, para) {
+    if (Array.isArray(v)) return v;
+    if (typeof v === 'string') return [...v];
+    if (v instanceof Rango) return v;
+    throw new PyError('TypeError', linea, `No puedo recorrer ${nt(v)} ${para || 'con for'}.`,
+      esNum(v) ? 'Para repetir N veces usa range: for i in range(5):' : '');
+  }
+  function redondear(x, n) {
+    if (n === undefined) {
+      const f = Math.floor(x), d = x - f;
+      if (d > 0.5) return BigInt(f + 1);
+      if (d < 0.5) return BigInt(f);
+      return BigInt(f % 2 === 0 ? f : f + 1);
+    }
+    return Number(x.toFixed(Math.max(0, Math.min(20, n))));
+  }
+
+  /* ---------------- Intérprete ---------------- */
+  class Interprete {
+    constructor(ast, op = {}) {
+      this.ast = ast;
+      this.vars = new Map();
+      this.orden = [];
+      this.salida = op.salida || (() => { });
+      this.pasos = 0;
+      this.maxPasos = op.maxPasos || 300000;
+      this.azar = op.azar || Math.random;
+      this.lineaActual = 0;
+      this.builtins = this.crearBuiltins();
+    }
+    tic(linea) {
+      this.lineaActual = linea;
+      if (++this.pasos > this.maxPasos)
+        throw new PyError('Bucle', linea, 'Tu programa lleva demasiados pasos y no termina: parece un ciclo infinito.',
+          'Revisa que la condición del while en algún momento se vuelva falsa (¿cambias la variable dentro del ciclo?).');
+    }
+    *correr() { yield* this.bloque(this.ast); }
+    *bloque(b) { for (const s of b) yield* this.sentencia(s); }
+    *sentencia(s) {
+      this.tic(s.linea);
+      yield { k: 'linea', linea: s.linea };
+      switch (s.k) {
+        case 'expr': yield* this.ev(s.e); return;
+        case 'pass': return;
+        case 'break': throw ROMPER;
+        case 'continue': throw SEGUIR;
+        case 'asigna': { const v = yield* this.ev(s.valor); yield* this.guardar(s.objetivo, v); return; }
+        case 'aumenta': {
+          const actual = yield* this.ev(s.objetivo);
+          const v = yield* this.ev(s.valor);
+          const r = s.op === '+' && Array.isArray(actual) && Array.isArray(v) ? (actual.push(...v), actual) : binop(s.op, actual, v, s.linea);
+          yield* this.guardar(s.objetivo, r); return;
+        }
+        case 'import': for (const m of s.mods) this.asignar(m, this.modulo(m, s.linea)); return;
+        case 'from': {
+          const mod = this.modulo(s.mod, s.linea);
+          for (const n of s.nombres) {
+            if (!(n in mod.attrs)) throw new PyError('ImportError', s.linea, `El módulo ${s.mod} no tiene nada llamado '${n}'.`);
+            this.asignar(n, mod.attrs[n]);
+          }
+          return;
+        }
+        case 'if': {
+          for (let i = 0; i < s.pruebas.length; i++) {
+            const t = s.pruebas[i];
+            if (i > 0) { this.tic(t.linea); yield { k: 'linea', linea: t.linea }; }
+            const c = yield* this.ev(t.cond);
+            yield { k: 'decision', linea: t.linea, valor: verdad(c) };
+            if (verdad(c)) { yield* this.bloque(t.cuerpo); return; }
+          }
+          if (s.sino) yield* this.bloque(s.sino);
+          return;
+        }
+        case 'while': {
+          let primera = true;
+          while (true) {
+            if (!primera) { this.tic(s.linea); yield { k: 'linea', linea: s.linea }; }
+            primera = false;
+            const c = yield* this.ev(s.cond);
+            yield { k: 'decision', linea: s.linea, valor: verdad(c) };
+            if (!verdad(c)) break;
+            try { yield* this.bloque(s.cuerpo); }
+            catch (e) { if (e === ROMPER) break; if (e === SEGUIR) continue; throw e; }
+          }
+          return;
+        }
+        case 'for': {
+          const it = iterable(yield* this.ev(s.iter), s.linea);
+          let primera = true;
+          if (Array.isArray(it)) {
+            for (let i = 0; i < it.length; i++) {
+              if (!primera) { this.tic(s.linea); yield { k: 'linea', linea: s.linea }; }
+              primera = false;
+              this.asignar(s.nombre, it[i]);
+              try { yield* this.bloque(s.cuerpo); }
+              catch (e) { if (e === ROMPER) break; if (e === SEGUIR) continue; throw e; }
+            }
+          } else {
+            for (const x of it) {
+              if (!primera) { this.tic(s.linea); yield { k: 'linea', linea: s.linea }; }
+              primera = false;
+              this.asignar(s.nombre, x);
+              try { yield* this.bloque(s.cuerpo); }
+              catch (e) { if (e === ROMPER) break; if (e === SEGUIR) continue; throw e; }
+            }
+          }
+          return;
+        }
+      }
+    }
+    asignar(n, v) {
+      if (!this.vars.has(n)) this.orden.push(n);
+      this.vars.set(n, v);
+    }
+    *guardar(obj, v) {
+      if (obj.k === 'nombre') {
+        if (this.builtins[obj.n] && ['print', 'input', 'int', 'str', 'len', 'range'].includes(obj.n))
+          throw new PyError('SyntaxError', obj.linea, `«${obj.n}» ya es una función de Python: no la uses como nombre de variable.`, 'Ponle otro nombre, por ejemplo «mi_' + obj.n + '».');
+        this.asignar(obj.n, v); return;
+      }
+      const seq = yield* this.ev(obj.obj);
+      const i = yield* this.ev(obj.i);
+      if (typeof seq === 'string') throw new PyError('TypeError', obj.linea, 'Los textos no se pueden cambiar letra por letra.', 'Arma un texto nuevo, por ejemplo con + o con replace().');
+      if (!Array.isArray(seq)) throw new PyError('TypeError', obj.linea, `No puedo usar corchetes para cambiar ${nt(seq)}.`);
+      seq[indiceReal(seq, i, obj.linea)] = v;
+    }
+    modulo(m, linea) {
+      const az = this.azar;
+      if (m === 'random') return new Modulo('random', {
+        randint: new Builtin('randint', (args, kw, l) => {
+          if (args.length !== 2) throw new PyError('TypeError', l, 'randint necesita dos números: el menor y el mayor.', 'Ejemplo: random.randint(1, 10)');
+          const a = aEnteroPy(args[0], l), b = aEnteroPy(args[1], l);
+          if (a > b) throw new PyError('ValueError', l, 'En randint el primer número tiene que ser el menor.');
+          return a + BigInt(Math.floor(az() * Number(b - a + 1n)));
+        }),
+        choice: new Builtin('choice', (args, kw, l) => {
+          const s = args[0];
+          if (!(typeof s === 'string' || Array.isArray(s)) || !s.length) throw new PyError('IndexError', l, 'random.choice necesita una lista que no esté vacía.');
+          return s[Math.floor(az() * s.length)];
+        }),
+        random: new Builtin('random', () => az()),
+        shuffle: new Builtin('shuffle', (args) => { const s = args[0]; for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(az() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return null; })
+      });
+      if (m === 'math') return new Modulo('math', {
+        pi: Math.PI, e: Math.E,
+        sqrt: new Builtin('sqrt', (a, k, l) => { const x = aNum(a[0]); if (x < 0) throw new PyError('ValueError', l, 'No hay raíz cuadrada de un número negativo (en los números reales).'); return Math.sqrt(x); }),
+        floor: new Builtin('floor', (a) => BigInt(Math.floor(aNum(a[0])))),
+        ceil: new Builtin('ceil', (a) => BigInt(Math.ceil(aNum(a[0])))),
+      });
+      if (m === 'time') return new Modulo('time', {
+        sleep: new Builtin('sleep', null)
+      });
+      throw new PyError('ModuleNotFoundError', linea, `En esta clase no está el módulo '${m}'.`, 'Los que sí hay: random, math y time.');
+    }
+    crearBuiltins() {
+      const B = (n, fn) => new Builtin(n, fn);
+      const unArg = (n, a, l) => { if (a.length !== 1) throw new PyError('TypeError', l, `${n}() recibe exactamente un valor entre los paréntesis.`); };
+      return {
+        print: B('print', null),
+        input: B('input', null),
+        int: B('int', (a, k, l) => { if (!a.length) return 0n; unArg('int', a, l); return aEnteroPy(a[0], l); }),
+        float: B('float', (a, k, l) => { if (!a.length) return 0; unArg('float', a, l); return aFloatPy(a[0], l); }),
+        str: B('str', (a, k, l) => a.length ? str(a[0]) : ''),
+        bool: B('bool', (a) => a.length ? verdad(a[0]) : false),
+        len: B('len', (a, k, l) => {
+          unArg('len', a, l); const v = a[0];
+          if (typeof v === 'string' || Array.isArray(v)) return BigInt(v.length);
+          if (v instanceof Rango) return v.largo();
+          throw new PyError('TypeError', l, `len() no funciona con ${nt(v)}.`, esNum(v) ? 'Los números no tienen largo. Si quieres contar sus dígitos: len(str(numero))' : '');
+        }),
+        range: B('range', (a, k, l) => {
+          if (a.length < 1 || a.length > 3) throw new PyError('TypeError', l, 'range() recibe de 1 a 3 números.', 'range(5), range(1, 6) o range(0, 10, 2)');
+          const n = a.map((x) => {
+            x = aEntero(x);
+            if (typeof x !== 'bigint') throw new PyError('TypeError', l, `range() solo acepta números enteros, y le diste ${nt(x)}.`, typeof x === 'string' ? '¿Vino de input()? Conviértelo con int(...).' : 'Sin decimales: range(5), no range(5.0).');
+            return x;
+          });
+          const [ini, fin, paso] = n.length === 1 ? [0n, n[0], 1n] : [n[0], n[1], n[2] ?? 1n];
+          if (paso === 0n) throw new PyError('ValueError', l, 'El paso de range() no puede ser 0.');
+          return new Rango(ini, fin, paso);
+        }),
+        abs: B('abs', (a, k, l) => { const v = aEntero(a[0]); if (typeof v === 'bigint') return v < 0n ? -v : v; if (typeof v === 'number') return Math.abs(v); throw new PyError('TypeError', l, `abs() necesita un número, no ${nt(v)}.`); }),
+        max: B('max', (a, k, l) => this.extremo(a, l, 1)),
+        min: B('min', (a, k, l) => this.extremo(a, l, -1)),
+        sum: B('sum', (a, k, l) => { let t = 0n; for (const x of iterable(a[0], l, 'con sum')) t = binop('+', t, x, l); return t; }),
+        round: B('round', (a, k, l) => {
+          const x = aEntero(a[0]);
+          if (typeof x === 'bigint') return x;
+          if (typeof x !== 'number') throw new PyError('TypeError', l, `round() necesita un número, no ${nt(x)}.`);
+          return a.length > 1 ? redondear(x, Number(aEntero(a[1]))) : redondear(x);
+        }),
+        type: B('type', (a) => new Tipo(tipoDe(a[0]))),
+        list: B('list', (a, k, l) => a.length ? [...iterable(a[0], l, 'con list')] : []),
+        sorted: B('sorted', (a, k, l) => this.ordenar([...iterable(a[0], l, 'con sorted')], l, kw0(k))),
+      };
+      function kw0(k) { return k && verdad(k.reverse ?? false); }
+    }
+    extremo(a, l, signo) {
+      const xs = a.length === 1 ? [...iterable(a[0], l, signo > 0 ? 'con max' : 'con min')] : a;
+      if (!xs.length) throw new PyError('ValueError', l, `${signo > 0 ? 'max' : 'min'}() recibió una lista vacía.`);
+      let m = xs[0];
+      for (const x of xs.slice(1)) if (compara(signo > 0 ? '>' : '<', x, m, l)) m = x;
+      return m;
+    }
+    ordenar(xs, l, reves) {
+      xs.sort((x, y) => compara('<', x, y, l) ? -1 : compara('>', x, y, l) ? 1 : 0);
+      if (reves) xs.reverse();
+      return xs;
+    }
+    *ev(n) {
+      switch (n.k) {
+        case 'num': case 'str': return n.v;
+        case 'const': return n.v;
+        case 'lista': { const r = []; for (const e of n.items) r.push(yield* this.ev(e)); return r; }
+        case 'fstr': {
+          let s = '';
+          for (const p of n.partes) {
+            if (typeof p === 'string') { s += p; continue; }
+            const v = yield* this.ev(p.e);
+            s += formatear(v, p.formato, n.linea);
+          }
+          return s;
+        }
+        case 'nombre': {
+          if (this.vars.has(n.n)) return this.vars.get(n.n);
+          if (n.n in this.builtins) return this.builtins[n.n];
+          throw this.noExiste(n.n, n.linea);
+        }
+        case 'o': { const a = yield* this.ev(n.a); return verdad(a) ? a : yield* this.ev(n.b); }
+        case 'y': { const a = yield* this.ev(n.a); return !verdad(a) ? a : yield* this.ev(n.b); }
+        case 'no': return !verdad(yield* this.ev(n.a));
+        case 'un': {
+          const a = aEntero(yield* this.ev(n.a));
+          if (!esNum(a)) throw new PyError('TypeError', n.linea, `No puedo ponerle signo «${n.op}» a ${nt(a)}.`);
+          return n.op === '-' ? -a : a;
+        }
+        case 'bin': { const a = yield* this.ev(n.a); const b = yield* this.ev(n.b); return binop(n.op, a, b, n.linea); }
+        case 'cmp': {
+          let a = yield* this.ev(n.vals[0]);
+          for (let i = 0; i < n.ops.length; i++) {
+            const b = yield* this.ev(n.vals[i + 1]);
+            if (!compara(n.ops[i], a, b, n.linea)) return false;
+            a = b;
+          }
+          return true;
+        }
+        case 'indice': {
+          const s = yield* this.ev(n.obj); const i = yield* this.ev(n.i);
+          if (typeof s === 'string' || Array.isArray(s)) return s[indiceReal(s, i, n.linea)];
+          if (s instanceof Rango) { const arr = [...s]; return arr[indiceReal(arr, i, n.linea)]; }
+          throw new PyError('TypeError', n.linea, `${cap(nt(s))} no se puede leer con corchetes [ ].`, esNum(s) ? 'Los corchetes son para textos y listas.' : '');
+        }
+        case 'rebanada': {
+          const s = yield* this.ev(n.obj);
+          if (!(typeof s === 'string' || Array.isArray(s))) throw new PyError('TypeError', n.linea, `${cap(nt(s))} no se puede rebanar con [ : ].`);
+          const num = function* (e, def) { if (!e) return def; const v = aEntero(yield* this.ev(e)); if (typeof v !== 'bigint') throw new PyError('TypeError', n.linea, 'Los números de la rebanada [a:b] tienen que ser enteros.'); return Number(v); }.bind(this);
+          const paso = yield* num(n.paso, 1);
+          if (paso === 0) throw new PyError('ValueError', n.linea, 'El paso de la rebanada no puede ser 0.');
+          const L = s.length;
+          const norm = (x, def) => { if (x === null) return def; if (x < 0) x += L; return paso > 0 ? Math.min(Math.max(x, 0), L) : Math.min(Math.max(x, -1), L - 1); };
+          const ini = norm(n.ini ? yield* num(n.ini) : null, paso > 0 ? 0 : L - 1);
+          const fin = norm(n.fin ? yield* num(n.fin) : null, paso > 0 ? L : -1);
+          const r = [];
+          if (paso > 0) for (let i = ini; i < fin; i += paso) r.push(s[i]); else for (let i = ini; i > fin; i += paso) r.push(s[i]);
+          return typeof s === 'string' ? r.join('') : r;
+        }
+        case 'attr': {
+          const o = yield* this.ev(n.obj);
+          if (o instanceof Modulo) {
+            if (n.n in o.attrs) return o.attrs[n.n];
+            throw new PyError('AttributeError', n.linea, `El módulo ${o.nombre} no tiene nada llamado '${n.n}'.`, o.nombre === 'random' ? 'Lo más usado: random.randint(1, 10)' : '');
+          }
+          const metodos = METODOS[tipoDe(o)];
+          if (metodos && metodos.includes(n.n)) return new Metodo(o, n.n);
+          const parecido = metodos && metodos.find((m) => m.toLowerCase() === n.n.toLowerCase());
+          throw new PyError('AttributeError', n.linea, `${cap(nt(o))} no tiene el método '${n.n}'.`,
+            parecido ? `¿Quisiste decir '${parecido}'? Python distingue mayúsculas y minúsculas.` : metodos ? `Algunos que sí tiene: ${metodos.slice(0, 5).join(', ')}.` : '');
+        }
+        case 'llamada': {
+          const f = yield* this.ev(n.f);
+          const args = []; for (const a of n.args) args.push(yield* this.ev(a));
+          const kw = {}; for (const k in n.kw) kw[k] = yield* this.ev(n.kw[k]);
+          if (f instanceof Builtin) {
+            if (f.nombre === 'print') {
+              const sep = 'sep' in kw ? (kw.sep === null ? ' ' : String(kw.sep)) : ' ';
+              const fin = 'end' in kw ? (kw.end === null ? '\n' : String(kw.end)) : '\n';
+              this.salida(args.map(str).join(sep) + fin);
+              return null;
+            }
+            if (f.nombre === 'input') {
+              if (args.length > 1) throw new PyError('TypeError', n.linea, 'input() recibe solo un texto: la pregunta.', 'Si quieres juntar cosas en la pregunta, usa un f-string: input(f"¿Cuántos años tienes, {nombre}? ")');
+              const pregunta = args.length ? str(args[0]) : '';
+              const r = yield { k: 'input', linea: n.linea, pregunta };
+              return r == null ? '' : String(r);
+            }
+            if (f.nombre === 'sleep') {
+              const s = aNum(args[0] ?? 0n);
+              yield { k: 'espera', ms: Math.min(Math.max(0, s * 1000), 5000) };
+              return null;
+            }
+            for (const k in kw) if (!(f.nombre === 'sorted' && k === 'reverse')) throw new PyError('TypeError', n.linea, `${f.nombre}() no recibe «${k}=».`);
+            return f.fn(args, kw, n.linea);
+          }
+          if (f instanceof Metodo) return llamarMetodo(f.obj, f.nombre, args, n.linea, this);
+          if (f instanceof Tipo) throw new PyError('TypeError', n.linea, 'Eso es un tipo de dato, no se puede llamar así.');
+          throw new PyError('TypeError', n.linea, `${cap(nt(f))} no es una función: no lleva paréntesis después.`,
+            n.f.k === 'nombre' ? `¿Usaste «${n.f.n}» como variable y como función? Ponles nombres distintos.` : '');
+        }
+      }
+      throw new PyError('Error', n.linea, 'Algo en este renglón no lo entiendo.');
+    }
+    noExiste(nombre, linea) {
+      const conocidos = [...this.vars.keys(), ...Object.keys(this.builtins), 'True', 'False', 'None', 'if', 'for', 'while', 'else'];
+      let pista = '';
+      const low = nombre.toLowerCase();
+      const mayus = conocidos.find((c) => c.toLowerCase() === low && c !== nombre);
+      if (mayus) pista = `¿Quisiste decir «${mayus}»? Python distingue mayúsculas y minúsculas.`;
+      else if (ESPANOL[low]) pista = `Python se escribe en inglés: en vez de «${nombre}» va «${ESPANOL[low]}».`;
+      else {
+        const cerca = conocidos.find((c) => c.length > 2 && distancia(c, nombre) <= (nombre.length > 5 ? 2 : 1));
+        if (cerca) pista = `¿Quisiste decir «${cerca}»? Revisa cómo lo escribiste.`;
+        else pista = 'Si es un texto, ponlo entre comillas: "' + nombre + '". Si es una variable, primero hay que darle un valor con «=».';
+      }
+      return new PyError('NameError', linea, `No conozco nada llamado «${nombre}».`, pista);
+    }
+    variables() {
+      return this.orden.filter((n) => !(this.vars.get(n) instanceof Modulo) && !(this.vars.get(n) instanceof Builtin)).map((n) => ({ nombre: n, valor: this.vars.get(n) }));
+    }
+  }
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  const METODOS = {
+    str: ['upper', 'lower', 'strip', 'title', 'capitalize', 'replace', 'split', 'count', 'startswith', 'endswith', 'isdigit', 'find', 'join'],
+    list: ['append', 'pop', 'insert', 'remove', 'sort', 'reverse', 'count', 'index'],
+  };
+  function llamarMetodo(o, m, a, l, interp) {
+    const pideTexto = (x, que) => { if (typeof x !== 'string') throw new PyError('TypeError', l, `${que} tiene que ser un texto, no ${nt(x)}.`); return x; };
+    if (typeof o === 'string') switch (m) {
+      case 'upper': return o.toUpperCase();
+      case 'lower': return o.toLowerCase();
+      case 'strip': return o.trim();
+      case 'title': return o.toLowerCase().replace(/(^|[^\p{L}])(\p{L})/gu, (x, a1, b1) => a1 + b1.toUpperCase());
+      case 'capitalize': return o.charAt(0).toUpperCase() + o.slice(1).toLowerCase();
+      case 'replace': return o.split(pideTexto(a[0], 'Lo que quieres reemplazar')).join(pideTexto(a[1], 'El reemplazo'));
+      case 'split': return a.length && a[0] !== null ? o.split(pideTexto(a[0], 'El separador')) : o.trim().split(/\s+/).filter(Boolean);
+      case 'count': return BigInt(o.split(pideTexto(a[0], 'Lo que cuentas')).length - 1);
+      case 'startswith': return o.startsWith(pideTexto(a[0], 'El inicio'));
+      case 'endswith': return o.endsWith(pideTexto(a[0], 'El final'));
+      case 'isdigit': return o.length > 0 && /^\d+$/.test(o);
+      case 'find': return BigInt(o.indexOf(pideTexto(a[0], 'Lo que buscas')));
+      case 'join': return [...iterable(a[0], l, 'con join')].map((x) => pideTexto(x, 'Cada elemento que juntas')).join(o);
+    }
+    if (Array.isArray(o)) switch (m) {
+      case 'append':
+        if (a.length !== 1) throw new PyError('TypeError', l, 'append() agrega UNA cosa a la vez.', 'Si son varias, usa append varias veces.');
+        o.push(a[0]); return null;
+      case 'pop': {
+        if (!o.length) throw new PyError('IndexError', l, 'No puedo sacar nada: la lista está vacía.');
+        const k = a.length ? indiceReal(o, a[0], l) : o.length - 1;
+        return o.splice(k, 1)[0];
+      }
+      case 'insert': { let k = Number(aEntero(a[0])); if (k < 0) k = Math.max(0, o.length + k); o.splice(Math.min(k, o.length), 0, a[1]); return null; }
+      case 'remove': {
+        const k = o.findIndex((x) => igual(x, a[0]));
+        if (k < 0) throw new PyError('ValueError', l, `No puedo quitar ${repr(a[0])}: no está en la lista.`);
+        o.splice(k, 1); return null;
+      }
+      case 'sort': interp.ordenar(o, l, false); return null;
+      case 'reverse': o.reverse(); return null;
+      case 'count': return BigInt(o.filter((x) => igual(x, a[0])).length);
+      case 'index': {
+        const k = o.findIndex((x) => igual(x, a[0]));
+        if (k < 0) throw new PyError('ValueError', l, `${repr(a[0])} no está en la lista.`);
+        return BigInt(k);
+      }
+    }
+    throw new PyError('AttributeError', l, `No existe el método ${m}.`);
+  }
+  function formatear(v, f, linea) {
+    if (!f) return str(v);
+    const m = /^([<>^]?)(\d*)(?:\.(\d+))?([fd%]?)$/.exec(f);
+    if (!m) return str(v);
+    let [, al, ancho, dec, tipo] = m;
+    let s;
+    if (tipo === 'f' || (dec && !tipo)) {
+      if (!esNum(v)) throw new PyError('ValueError', linea, `El formato «:${f}» es para números, y esto es ${nt(v)}.`);
+      s = aNum(aEntero(v)).toFixed(dec ? Number(dec) : 6);
+    } else if (tipo === '%') { s = (aNum(aEntero(v)) * 100).toFixed(dec ? Number(dec) : 6) + '%'; }
+    else s = str(v);
+    if (ancho) {
+      const w = Number(ancho);
+      const izq = al ? al === '<' : !(esNum(v));
+      if (al === '^') { const t = w - s.length; if (t > 0) s = ' '.repeat(Math.floor(t / 2)) + s + ' '.repeat(Math.ceil(t / 2)); }
+      else s = izq ? s.padEnd(w) : s.padStart(w);
+    }
+    return s;
+  }
+  function distancia(a, b) {
+    const m = a.length, n = b.length; const d = Array.from({ length: m + 1 }, (_, i) => [i]);
+    for (let j = 1; j <= n; j++) d[0][j] = j;
+    for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++)
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    return d[m][n];
+  }
+  function semilla(s) {
+    let a = s >>> 0;
+    return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+
+  /* Corre un programa de una sola vez con entradas ya dadas (para revisar retos y para las pruebas). */
+  function correrSincrono(codigo, { entradas = [], azar, maxPasos, eco = true } = {}) {
+    let out = '';
+    const ent = [...entradas];
+    try {
+      const ast = analizar(codigo);
+      const it = new Interprete(ast, { salida: (t) => { out += t; }, azar, maxPasos });
+      const g = it.correr();
+      let r = g.next();
+      while (!r.done) {
+        let envio;
+        if (r.value.k === 'input') {
+          out += r.value.pregunta;
+          if (!ent.length) throw new PyError('SinEntradas', r.value.linea, 'El programa pidió más respuestas de las que le dimos.');
+          envio = String(ent.shift());
+          if (eco) out += envio + '\n';
+        }
+        r = g.next(envio);
+      }
+      return { salida: out, error: null, vars: it.vars, interp: it };
+    } catch (e) {
+      if (e instanceof PyError) return { salida: out, error: e };
+      throw e;
+    }
+  }
+
+  return { analizar, Interprete, PyError, str, repr, tipoDe, correrSincrono, semilla, verdad };
+})();
+if (typeof module !== 'undefined') module.exports = MiniPy;
+
+</script>
+<script>
+(() => {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const pausa = (ms) => new Promise((r) => setTimeout(r, ms));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('clase1_' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('clase1_' + k, JSON.stringify(v)); } catch (e) { } },
+  del(k) { try { localStorage.removeItem('clase1_' + k); } catch (e) { } }
+};
+const ICONO = {
+  play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>',
+  pasos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M4 12h7M4 18h10"/><path d="M17 9l3 3-3 3"/></svg>',
+  reset: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.6"/><path d="M4 4v4.6h4.6"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>',
+  foco: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>',
+  sig: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5v14l9-7zM16 5h3v14h-3z"/></svg>',
+  ff: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5v14l9-7zM12 5v14l9-7z"/></svg>',
+  stop: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>'
+};
+
+/* ---------- resaltado de Python ---------- */
+const KW = /^(if|elif|else|for|while|in|and|or|not|True|False|None|break|continue|import|from|pass|is)$/;
+const FN = /^(print|input|int|str|float|len|range|round|max|min|sum|abs|type|list|sorted|bool)$/;
+function resaltar(linea) {
+  let out = '';
+  const re = /(#.*$)|([fF]?"(?:[^"\\]|\\.)*"?|[fF]?'(?:[^'\\]|\\.)*'?)|(\b\d[\d_]*(?:\.\d+)?\b)|([\p{L}_][\p{L}\p{N}_]*)|(\s+)|(.)/gu;
+  let m;
+  while ((m = re.exec(linea))) {
+    if (m[1]) out += `<span class="t-com">${esc(m[1])}</span>`;
+    else if (m[2]) {
+      let s = esc(m[2]);
+      if (/^[fF]/.test(m[2])) s = s.replace(/\{[^}]*\}/g, (x) => `<span class="t-llave">${x}</span>`);
+      out += `<span class="t-str">${s}</span>`;
+    } else if (m[3]) out += `<span class="t-num">${m[3]}</span>`;
+    else if (m[4]) out += KW.test(m[4]) ? `<span class="t-kw">${m[4]}</span>` : FN.test(m[4]) ? `<span class="t-fn">${m[4]}</span>` : esc(m[4]);
+    else out += esc(m[0]);
+  }
+  return out;
+}
+const resaltarTodo = (codigo) => codigo.split('\n').map(resaltar).join('\n');
+
+/* ---------- stickers ---------- */
+const STICKERS = [
+  { id: 'robot', nombre: 'Robot obediente', svg: '<svg viewBox="0 0 40 40"><rect x="8" y="10" width="24" height="20" rx="6" fill="var(--blue)" stroke="var(--line)" stroke-width="2.5"/><circle cx="16" cy="19" r="2.6" fill="var(--card)"/><circle cx="24" cy="19" r="2.6" fill="var(--card)"/><path d="M20 10V5" stroke="var(--line)" stroke-width="2.5"/><circle cx="20" cy="4.5" r="2.4" fill="var(--yellow)" stroke="var(--line)" stroke-width="2"/></svg>' },
+  { id: 'print', nombre: 'Primer programa', svg: '<svg viewBox="0 0 40 40"><rect x="5" y="8" width="30" height="24" rx="5" fill="var(--term-bg)" stroke="var(--line)" stroke-width="2.5"/><path d="M11 17l5 3-5 3" fill="none" stroke="var(--yellow)" stroke-width="2.6" stroke-linecap="round"/><path d="M19 24h9" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round"/></svg>' },
+  { id: 'variables', nombre: 'Cajas llenas', svg: '<svg viewBox="0 0 40 40"><rect x="7" y="14" width="26" height="19" rx="3" fill="var(--yellow)" stroke="var(--line)" stroke-width="2.5"/><rect x="5" y="9" width="30" height="7" rx="2" fill="var(--purple)" stroke="var(--line)" stroke-width="2.5"/><path d="M15 22h10" stroke="var(--line)" stroke-width="2.5" stroke-linecap="round"/></svg>' },
+  { id: 'input', nombre: 'Cazaerrores', svg: '<svg viewBox="0 0 40 40"><ellipse cx="20" cy="23" rx="9" ry="11" fill="var(--red)" stroke="var(--line)" stroke-width="2.5"/><path d="M20 12v22M11 20H5M35 20h-6M12 29l-5 3M28 29l5 3M14 13l-4-4M26 13l4-4" stroke="var(--line)" stroke-width="2.5" stroke-linecap="round"/></svg>' },
+  { id: 'if', nombre: 'Toma decisiones', svg: '<svg viewBox="0 0 40 40"><path d="M20 5l14 15-14 15L6 20z" fill="var(--green)" stroke="var(--line)" stroke-width="2.5" stroke-linejoin="round"/><path d="M17 16a3 3 0 1 1 4 3c-1 .5-1 1-1 2.5M20 25v.5" fill="none" stroke="var(--line)" stroke-width="2.5" stroke-linecap="round"/></svg>' },
+  { id: 'for', nombre: 'Ciclos', svg: '<svg viewBox="0 0 40 40"><path d="M30 14a11 11 0 1 0 2 9" fill="none" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/><path d="M31 6v8h-8" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+  { id: 'juego', nombre: 'Hizo un juego', svg: '<svg viewBox="0 0 40 40"><path d="M20 4l4.5 9.3 10.2 1.5-7.4 7.2 1.8 10.2L20 27.4l-9.1 4.8 1.8-10.2-7.4-7.2 10.2-1.5z" fill="var(--yellow)" stroke="var(--line)" stroke-width="2.5" stroke-linejoin="round"/></svg>' }
+];
+let ganados = new Set(store.get('stickers', []));
+function ganar(id) {
+  const nuevo = !ganados.has(id);
+  ganados.add(id); store.set('stickers', [...ganados]);
+  pintarStickers(nuevo ? id : null);
+}
+function pintarStickers(recien) {
+  $('#estrellas-txt').textContent = `${ganados.size}/${STICKERS.length}`;
+  $('#stickers').innerHTML = STICKERS.map((s) => `<div class="sticker ${ganados.has(s.id) ? 'ganado' : ''} ${recien === s.id ? 'recien' : ''}">${s.svg}${esc(s.nombre)}</div>`).join('');
+}
+
+/* ---------- editor ---------- */
+const NOMBRES_ERROR = {
+  SyntaxError: 'Algo está mal escrito', IndentationError: 'Problema de sangría', NameError: 'Nombre desconocido',
+  TypeError: 'Tipos que no se mezclan', ValueError: 'Valor que no se puede convertir', ZeroDivisionError: 'División entre cero',
+  IndexError: 'Posición que no existe', AttributeError: 'Método que no existe', Bucle: 'Ciclo que no termina',
+  ModuleNotFoundError: 'Módulo que no existe', ImportError: 'No se pudo importar', OverflowError: 'Número demasiado grande'
+};
+const ANIMOS = ['Tranqui: ver errores es parte del trabajo diario de cualquier programador.', 'Lee el mensaje con calma: casi siempre dice exactamente qué falta.', 'Cada error que arreglas es algo que ya no se te va a olvidar.'];
+let nAnimo = 0;
+
+class Editor {
+  constructor(raiz, op) {
+    this.raiz = raiz; this.op = op; this.token = null; this.intentos = 0; this.nPista = 0;
+    const guardado = op.guardar !== false ? store.get('code_' + op.id, null) : null;
+    this.construir(guardado ?? op.codigo);
+  }
+  construir(codigo) {
+    const op = this.op;
+    this.raiz.className = 'ed';
+    this.raiz.innerHTML = `
+      <div class="ed-barra">
+        <span class="ed-titulo">${esc(op.titulo || 'Python')}</span><span class="esp"></span>
+        <button class="btn btn-verde btn-chico" type="button" data-a="correr">${ICONO.play}Correr</button>
+        ${op.pasos ? `<button class="btn btn-amarillo btn-chico" type="button" data-a="pasos">${ICONO.pasos}Paso a paso</button>` : ''}
+        <button class="btn btn-chico" type="button" data-a="reset" title="Regresar al código original" aria-label="Regresar al código original">${ICONO.reset}</button>
+      </div>
+      <div class="ed-codigo">
+        <div class="ed-gutter" aria-hidden="true"></div>
+        <textarea class="ed-texto" id="ta-${op.id}" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off" aria-label="Código en Python"></textarea>
+        <div class="ed-vista oculto" aria-live="polite"></div>
+      </div>
+      <div class="ed-vista-ayuda oculto"><span><i style="background:var(--yellow)"></i>va a correr</span><span><i style="background:var(--green-soft)"></i>acaba de correr</span></div>
+      <div class="ed-teclas" aria-label="Símbolos">${['⇥', ':', '(', ')', '"', '=', '+', '*', '<', '>', '[', ']', '{', '}', '#'].map((t) => `<button type="button" tabindex="-1" data-t="${t === '⇥' ? '    ' : esc(t)}" aria-label="${t === '⇥' ? 'Sangría (4 espacios)' : 'Escribir ' + esc(t)}">${esc(t)}</button>`).join('')}</div>
+      <div class="ed-pasos oculto">
+        <button class="btn btn-amarillo btn-chico" type="button" data-a="sig">${ICONO.sig}Siguiente paso</button>
+        <button class="btn btn-chico" type="button" data-a="resto">${ICONO.ff}Correr el resto</button>
+        <button class="btn btn-chico" type="button" data-a="salir">${ICONO.stop}Salir</button>
+        <span class="cuenta"></span>
+      </div>
+      <div class="ed-mem ${op.memoria ? '' : 'oculto'}"><span class="ed-mem-tit">Memoria · variables</span><div class="cajas"><span class="vacio">Todavía no hay cajas: corre el programa.</span></div></div>
+      <div class="ed-consola" aria-live="polite"><span class="tit">Salida</span><span class="tenue">Dale «Correr» para ver qué pasa.</span></div>
+      <div class="ed-error oculto" role="alert"></div>
+      ${op.reto ? `<div class="ed-reto">
+        <div class="fila">
+          <button class="btn btn-azul btn-chico" type="button" data-a="revisar">${ICONO.check}Revisar mi reto</button>
+          <button class="btn btn-chico" type="button" data-a="pista">${ICONO.foco}Pista</button>
+          <button class="btn btn-chico oculto" type="button" data-a="solucion">Ver una solución</button>
+        </div>
+        <div class="ed-pistas"></div>
+        <div class="ed-reto-res oculto" aria-live="polite"></div>
+      </div>` : ''}`;
+    this.ta = $('textarea', this.raiz);
+    this.gutter = $('.ed-gutter', this.raiz);
+    this.vista = $('.ed-vista', this.raiz);
+    this.consola = $('.ed-consola', this.raiz);
+    this.errorEl = $('.ed-error', this.raiz);
+    this.mem = $('.ed-mem', this.raiz);
+    this.cajasEl = $('.cajas', this.raiz);
+    this.pasosEl = $('.ed-pasos', this.raiz);
+    this.ta.value = codigo;
+    this.ajustar();
+    this.ta.addEventListener('input', () => {
+      if (/[\u201C\u201D\u2018\u2019]/.test(this.ta.value)) {
+        const p = this.ta.selectionStart;
+        this.ta.value = this.ta.value.replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'");
+        this.ta.setSelectionRange(p, p);
+      }
+      this.ajustar(); this.marcarLinea(0);
+      clearTimeout(this.tGuardar);
+      this.tGuardar = setTimeout(() => { if (this.op.guardar !== false) store.set('code_' + this.op.id, this.ta.value); }, 400);
+    });
+    this.ta.addEventListener('keydown', (e) => this.tecla(e));
+    $$('.ed-teclas button', this.raiz).forEach((b) => {
+      b.addEventListener('pointerdown', (e) => e.preventDefault());
+      b.addEventListener('click', () => { this.ta.focus(); this.insertar(b.dataset.t); });
+    });
+    this.raiz.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-a]'); if (!b) return;
+      const a = b.dataset.a;
+      if (a === 'correr') this.correr('correr');
+      else if (a === 'pasos') this.correr('pasos');
+      else if (a === 'reset') this.reiniciar();
+      else if (a === 'sig') this.avanzar && this.avanzar('sig');
+      else if (a === 'resto') this.avanzar && this.avanzar('resto');
+      else if (a === 'salir') { const corria = !!this.token; this.detener(); this.salirPasos(); if (corria) this.escribirTenue('(detuviste el programa)'); }
+      else if (a === 'revisar') this.revisar();
+      else if (a === 'pista') this.pista();
+      else if (a === 'solucion') this.solucion();
+    });
+  }
+  ajustar() {
+    const n = Math.max(this.ta.value.split('\n').length, this.op.lineas || 3);
+    this.ta.style.height = (n * 24 + 24 + 14) + 'px';
+    if (this.gutter.childElementCount !== n) this.gutter.innerHTML = Array.from({ length: n }, (_, i) => `<span>${i + 1}</span>`).join('');
+  }
+  marcarLinea(l) {
+    $$('span', this.gutter).forEach((s, i) => s.classList.toggle('mal', i + 1 === l));
+  }
+  insertar(txt) {
+    const t = this.ta;
+    let ok = false;
+    try { ok = document.execCommand('insertText', false, txt); } catch (e) { ok = false; }
+    if (!ok) { t.setRangeText(txt, t.selectionStart, t.selectionEnd, 'end'); t.dispatchEvent(new Event('input')); }
+  }
+  tecla(e) {
+    const t = this.ta;
+    if (e.key === 'Tab' && !e.shiftKey) { e.preventDefault(); this.insertar('    '); return; }
+    if (e.key === 'Enter' && !e.isComposing && !e.shiftKey && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      const v = t.value, p = t.selectionStart;
+      const ini = v.lastIndexOf('\n', p - 1) + 1;
+      const linea = v.slice(ini, p);
+      const sang = (linea.match(/^[ \t]*/) || [''])[0];
+      const extra = /:\s*(#.*)?$/.test(linea) ? '    ' : '';
+      this.insertar('\n' + sang + extra);
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); this.correr('correr'); return; }
+    if (e.key === 'Backspace' && t.selectionStart === t.selectionEnd) {
+      const v = t.value, p = t.selectionStart, ini = v.lastIndexOf('\n', p - 1) + 1;
+      const antes = v.slice(ini, p);
+      if (antes.length >= 2 && /^ +$/.test(antes)) {
+        e.preventDefault();
+        const n = antes.length % 4 || 4;
+        t.setSelectionRange(p - n, p);
+        let ok = false; try { ok = document.execCommand('delete'); } catch (er) { ok = false; }
+        if (!ok) { t.setRangeText('', p - n, p, 'end'); t.dispatchEvent(new Event('input')); }
+      }
+    }
+  }
+  reiniciar() {
+    this.detener(); this.salirPasos();
+    this.ta.value = this.op.codigo; this.ajustar(); this.marcarLinea(0);
+    store.del('code_' + this.op.id);
+    this.consola.innerHTML = '<span class="tit">Salida</span><span class="tenue">Código original de vuelta.</span>';
+    this.errorEl.classList.add('oculto');
+    this.cajasEl.innerHTML = '<span class="vacio">Todavía no hay cajas: corre el programa.</span>';
+    if (this.op.alReiniciar) this.op.alReiniciar(this);
+  }
+  setCodigo(c) { this.detener(); this.salirPasos(); this.ta.value = c; this.ajustar(); this.marcarLinea(0); this.limpiarConsola(); this.errorEl.classList.add('oculto'); }
+  detener() { this.token = null; this.raiz.classList.remove('corriendo'); if (this.liberar) { const l = this.liberar; this.liberar = null; l(); } if (this.avanzar) { const a = this.avanzar; this.avanzar = null; a('salir'); } }
+  limpiarConsola() { this.consola.innerHTML = '<span class="tit">Salida</span>'; this.salidaTxt = 0; this.ultimo = null; this.buf = ''; }
+  escribir(t) {
+    if (this.salidaTxt > 40000) return;
+    this.salidaTxt += t.length;
+    if (this.salidaTxt > 40000) t += '\n… (recorté la salida: es demasiado larga)\n';
+    this.buf = (this.buf || '') + t;
+  }
+  volcar() {
+    if (!this.buf) return;
+    if (!this.ultimo) { this.ultimo = document.createElement('span'); this.consola.append(this.ultimo); }
+    this.ultimo.textContent += this.buf; this.buf = '';
+    this.consola.scrollTop = this.consola.scrollHeight;
+  }
+  escribirTenue(t) { this.volcar(); const s = document.createElement('span'); s.className = 'tenue'; s.textContent = (this.consola.textContent.endsWith('\n') || this.consola.childElementCount <= 1 ? '' : '\n') + t; this.consola.append(s); this.ultimo = null; }
+  pedir(pregunta) {
+    if (pregunta) this.escribir(pregunta);
+    this.volcar();
+    return new Promise((resolve) => {
+      const f = document.createElement('form');
+      f.innerHTML = `<input type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Tu respuesta"><button type="submit">Enter ↵</button>`;
+      this.consola.append(f); this.ultimo = null;
+      const inp = $('input', f);
+      setTimeout(() => { try { inp.focus({ preventScroll: true }); } catch (e) { inp.focus(); } }, 30);
+      const terminar = (valor) => {
+        f.remove();
+        const s = document.createElement('span'); s.className = 'tecleado'; s.textContent = valor + '\n';
+        this.consola.append(s); this.ultimo = null;
+        this.liberar = null;
+        resolve(valor);
+      };
+      f.addEventListener('submit', (e) => { e.preventDefault(); terminar(inp.value.replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'")); });
+      this.liberar = () => { f.remove(); resolve(''); };
+    });
+  }
+  mostrarError(e) {
+    this.volcar();
+    this.marcarLinea(e.linea);
+    const nombre = NOMBRES_ERROR[e.tipo] || 'Error';
+    this.errorEl.innerHTML = `<b>${e.linea ? `Renglón ${e.linea} · ` : ''}${esc(nombre)}</b><span>${esc(e.message)}</span>${e.pista ? `<span class="pista"><b style="font-size:inherit;color:inherit">Pista:</b> ${esc(e.pista)}</span>` : ''}<span class="tipo">En Python esto se llama ${esc(e.tipo === 'Bucle' ? 'un ciclo infinito' : e.tipo)}</span>${nAnimo < ANIMOS.length ? `<span class="animo">${esc(ANIMOS[nAnimo++])}</span>` : ''}`;
+    this.errorEl.classList.remove('oculto');
+    if (this.vistaActiva) { $$('.vl', this.vista).forEach((l) => l.classList.toggle('sigue', +l.dataset.n === e.linea)); }
+  }
+  async correr(modo) {
+    this.detener();
+    const token = this.token = {};
+    this.limpiarConsola();
+    this.errorEl.classList.add('oculto');
+    this.marcarLinea(0);
+    if (this.vistaActiva && modo !== 'pasos') this.salirPasos();
+    const codigo = this.ta.value;
+    let ast;
+    try { ast = MiniPy.analizar(codigo); }
+    catch (e) { if (e instanceof MiniPy.PyError) { this.mostrarError(e); return; } throw e; }
+    const it = new MiniPy.Interprete(ast, { salida: (t) => this.escribir(t), azar: this.op.azar, maxPasos: 100000 });
+    const pasos = modo === 'pasos';
+    this.saltar = false;
+    if (pasos) this.entrarPasos(codigo);
+    this.previo = new Map();
+    this.raiz.classList.add('corriendo');
+    let envio, cuenta = 0, anterior = 0, nPaso = 0;
+    this.ultimaDecision = null;
+    try {
+      const g = it.correr();
+      while (true) {
+        const r = g.next(envio); envio = undefined;
+        if (token !== this.token) return;
+        if (r.done) break;
+        const ev = r.value;
+        if (ev.k === 'linea') {
+          if (pasos && !this.saltar) {
+            nPaso++;
+            this.volcar();
+            this.pintarPaso(ev.linea, anterior, it, nPaso);
+            const accion = await new Promise((res) => { this.avanzar = res; });
+            this.avanzar = null;
+            if (token !== this.token) return;
+            if (accion === 'resto') { this.saltar = true; }
+          }
+          anterior = ev.linea;
+          if (++cuenta % 3000 === 0) { this.volcar(); await pausa(0); if (token !== this.token) return; }
+        } else if (ev.k === 'decision') {
+          this.ultimaDecision = ev;
+        } else if (ev.k === 'input') {
+          if (pasos && !this.saltar) this.pintarPaso(ev.linea, 0, it, nPaso, true);
+          envio = await this.pedir(ev.pregunta);
+          if (token !== this.token) return;
+        } else if (ev.k === 'espera') {
+          if (!pasos || this.saltar) { this.volcar(); await pausa(ev.ms); if (token !== this.token) return; }
+        }
+      }
+      this.volcar();
+      if (!this.consola.textContent.replace('Salida', '').trim()) this.escribirTenue('(el programa no imprimió nada)');
+      if (pasos) { this.pintarPaso(0, anterior, it, nPaso); this.escribirTenue('✓ El programa terminó.'); }
+      if (this.op.memoria || pasos) this.pintarMemoria(it);
+      if (this.op.alTerminar) this.op.alTerminar(this, it);
+    } catch (e) {
+      if (token !== this.token) return;
+      if (e instanceof MiniPy.PyError) { this.mostrarError(e); if (this.op.memoria || pasos) this.pintarMemoria(it); }
+      else { console.error(e); this.mostrarError(new MiniPy.PyError('Error', 0, 'Algo falló dentro de la página. Recárgala e intenta de nuevo.')); }
+    } finally {
+      if (token === this.token) { this.raiz.classList.remove('corriendo'); if (!pasos) this.pasosEl.classList.add('oculto'); else $('.cuenta', this.pasosEl).textContent = 'Terminó · «Salir» para editar'; this.token = null; }
+    }
+  }
+  entrarPasos(codigo) {
+    this.vistaActiva = true;
+    this.lineasVista = codigo.split('\n');
+    this.vista.innerHTML = this.lineasVista.map((l, i) => `<div class="vl" data-n="${i + 1}"><span class="vn">${i + 1}</span><span class="vc">${resaltar(l) || ' '}</span></div>`).join('');
+    this.vista.classList.remove('oculto');
+    this.ta.classList.add('oculto'); this.gutter.classList.add('oculto');
+    $('.ed-teclas', this.raiz).classList.add('oculto');
+    $('.ed-vista-ayuda', this.raiz).classList.remove('oculto');
+    this.pasosEl.classList.remove('oculto');
+    this.mem.classList.remove('oculto');
+  }
+  salirPasos() {
+    if (!this.vistaActiva) return;
+    this.vistaActiva = false;
+    this.vista.classList.add('oculto');
+    this.ta.classList.remove('oculto'); this.gutter.classList.remove('oculto');
+    $('.ed-teclas', this.raiz).classList.remove('oculto');
+    $('.ed-vista-ayuda', this.raiz).classList.add('oculto');
+    this.pasosEl.classList.add('oculto');
+    if (!this.op.memoria) this.mem.classList.add('oculto');
+  }
+  pintarPaso(sigue, acaba, it, n, esperandoInput) {
+    $$('.vl', this.vista).forEach((l) => {
+      const k = +l.dataset.n;
+      l.classList.toggle('sigue', k === sigue);
+      l.classList.toggle('acaba', k === acaba && k !== sigue);
+      const d = $('.dec', l); if (d) d.remove();
+    });
+    const dcs = this.ultimaDecision;
+    if (dcs && dcs.linea === acaba) {
+      const l = $(`.vl[data-n="${dcs.linea}"]`, this.vista);
+      if (l) l.insertAdjacentHTML('beforeend', `<span class="dec ${dcs.valor ? 'si' : 'no'}">${dcs.valor ? '✓ verdadero' : '✗ falso'}</span>`);
+    }
+    this.ultimaDecision = null;
+    const s = sigue && $(`.vl[data-n="${sigue}"]`, this.vista);
+    if (s) { const top = s.offsetTop - this.vista.offsetTop; if (this.vista.scrollTop > top || top > this.vista.scrollTop + this.vista.clientHeight - 30) this.vista.scrollTop = top - 40; }
+    $('.cuenta', this.pasosEl).textContent = esperandoInput ? 'Esperando tu respuesta abajo ↓' : sigue ? `Paso ${n} · renglón ${sigue}` : 'Fin';
+    $$('[data-a="sig"],[data-a="resto"]', this.pasosEl).forEach((b) => { b.disabled = !!esperandoInput || !sigue; });
+    this.pintarMemoria(it);
+  }
+  pintarMemoria(it) {
+    const vs = it.variables();
+    if (!vs.length) { this.cajasEl.innerHTML = '<span class="vacio">Todavía no hay cajas.</span>'; return; }
+    const tipos = { int: 'número entero', float: 'número decimal', str: 'texto', bool: 'verdadero/falso', list: 'lista', range: 'range', NoneType: 'nada' };
+    this.cajasEl.innerHTML = vs.map(({ nombre, valor }) => {
+      const t = MiniPy.tipoDe(valor);
+      const r = MiniPy.repr(valor);
+      const nueva = this.previo.get(nombre) !== r;
+      let val = `<span class="caja-val">${esc(r)}</span>`;
+      if (Array.isArray(valor) && valor.length && valor.length <= 12) val = `<span class="lista-celdas">${valor.map((x, i) => `<span>${esc(MiniPy.repr(x))}<small>${i}</small></span>`).join('')}</span>`;
+      return `<div class="caja ${t} ${nueva ? 'nueva' : ''}"><span class="caja-etq">${esc(nombre)}</span>${val}<span class="caja-tipo">${tipos[t] || t}</span></div>`;
+    }).join('');
+    this.previo = new Map(vs.map(({ nombre, valor }) => [nombre, MiniPy.repr(valor)]));
+  }
+  revisar() {
+    const res = $('.ed-reto-res', this.raiz);
+    this.intentos++;
+    let r;
+    try { r = this.op.reto.probar(this.ta.value); }
+    catch (e) { console.error(e); r = { ok: false, msg: 'No pude revisar tu código. Intenta correrlo primero.' }; }
+    res.className = 'ed-reto-res ' + (r.ok ? 'ok' : 'mal');
+    res.innerHTML = r.ok ? `<b>¡Reto cumplido!</b> ${esc(r.msg || '')} Ganaste el sticker «${esc(STICKERS.find((s) => s.id === this.op.reto.sticker).nombre)}».` : `<b>Todavía no.</b> ${esc(r.msg)}`;
+    if (r.ok) ganar(this.op.reto.sticker);
+    if (!r.ok && this.intentos >= 2) $('[data-a="solucion"]', this.raiz).classList.remove('oculto');
+  }
+  pista() {
+    const ps = this.op.reto.pistas;
+    const cont = $('.ed-pistas', this.raiz);
+    if (this.nPista >= ps.length) { $('[data-a="solucion"]', this.raiz).classList.remove('oculto'); return; }
+    cont.insertAdjacentHTML('beforeend', `<div class="ed-pista"><b>Pista ${this.nPista + 1}:</b> ${ps[this.nPista]}</div>`);
+    this.nPista++;
+    if (this.nPista >= ps.length) { const b = $('[data-a="pista"]', this.raiz); b.disabled = true; $('[data-a="solucion"]', this.raiz).classList.remove('oculto'); }
+  }
+  solucion() { this.setCodigo(this.op.reto.solucion); store.set('code_' + this.op.id, this.ta.value); this.escribirTenue('Esta es una solución. Córrela y compárala con la tuya.'); }
+}
+
+/* ---------- ayudas para revisar retos ---------- */
+const correrCon = (codigo, entradas = [], extra = {}) => MiniPy.correrSincrono(codigo, { entradas, maxPasos: 200000, eco: false, ...extra });
+function explicarFallo(r) {
+  if (!r.error) return null;
+  if (r.error.tipo === 'SinEntradas') return 'Tu programa pidió más respuestas de las que esperaba el reto.';
+  return `Tu programa marcó un error en el renglón ${r.error.linea}: ${r.error.message} Córrelo para ver la pista.`;
+}
+const lineasDe = (s) => s.split('\n').map((x) => x.trim()).filter(Boolean);
+
+/* ---------- configuración de cada editor ---------- */
+const EDITORES = {
+  'e-hola': { titulo: 'hola.py', codigo: 'print("Hola, mundo")\nprint("Estoy aprendiendo a programar")', lineas: 3 },
+  'e-reto-print': {
+    titulo: 'presentacion.py', codigo: 'print("Me llamo ...")\n', lineas: 4,
+    reto: {
+      sticker: 'print',
+      pistas: ['Cada <code>print</code> imprime un renglón. Necesitas dos.', 'El texto va entre comillas: <code>print("Mi comida favorita es el pozole")</code>'],
+      solucion: 'print("Me llamo Ana")\nprint("Mi comida favorita es el pozole")',
+      probar(c) {
+        const r = correrCon(c);
+        const f = explicarFallo(r); if (f) return { ok: false, msg: f };
+        const ls = lineasDe(r.salida);
+        if (ls.some((l) => l.includes('...'))) return { ok: false, msg: 'Cambia los «...» por tu nombre de verdad.' };
+        if (ls.length < 2) return { ok: false, msg: `Tu programa imprime ${ls.length} renglón${ls.length === 1 ? '' : 'es'}. Agrega otro print para tu comida favorita.` };
+        return { ok: true, msg: 'Tu programa habla.' };
+      }
+    }
+  },
+  'e-cajas': { titulo: 'cajas.py', pasos: true, memoria: true, codigo: 'nombre = "Ana"\nedad = 20\nprint(nombre, "tiene", edad, "años")\nedad = edad + 1\nprint("Ya cumplió", edad)', lineas: 5 },
+  'e-reto-cuenta': {
+    titulo: 'tienda.py', pasos: true, memoria: true, lineas: 5,
+    codigo: 'precio = 25\ncantidad = 3\ntotal = 0    # cambia el 0: precio por cantidad\nprint("Total a pagar:", total)',
+    reto: {
+      sticker: 'variables',
+      pistas: ['La cuenta usa las dos cajas que ya existen: <code>precio</code> y <code>cantidad</code>.', 'Multiplicar en Python es <code>*</code>: <code>total = precio * cantidad</code>'],
+      solucion: 'precio = 25\ncantidad = 3\ntotal = precio * cantidad\nprint("Total a pagar:", total)',
+      probar(c) {
+        const r = correrCon(c);
+        const f = explicarFallo(r); if (f) return { ok: false, msg: f };
+        const v = r.vars;
+        if (!v.has('total')) return { ok: false, msg: 'No encuentro la variable total.' };
+        const p = v.get('precio'), q = v.get('cantidad'), t = v.get('total');
+        const num = (x) => typeof x === 'bigint' || typeof x === 'number';
+        if (!num(p) || !num(q)) return { ok: false, msg: 'Deja precio y cantidad como números (sin comillas).' };
+        if (!num(t) || Number(t) !== Number(p) * Number(q)) return { ok: false, msg: `total vale ${MiniPy.repr(t)}, pero ${MiniPy.str(p)} por ${MiniPy.str(q)} da ${Number(p) * Number(q)}.` };
+        const c2 = c.replace(/^(\s*precio\s*=\s*)[\d.]+/m, (x, a) => a + '7');
+        const r2 = correrCon(c2);
+        if (r2.error || Number(r2.vars.get('total')) !== 7 * Number(r2.vars.get('cantidad'))) return { ok: false, msg: 'Con el precio de 25 sale bien, pero cambié el precio a 7 y el total no cambió. Haz la cuenta con las variables, no con el número escrito a mano.' };
+        if (!r.salida.includes(MiniPy.str(t))) return { ok: false, msg: 'La cuenta está bien. Falta que el print muestre el total.' };
+        return { ok: true, msg: 'Y funciona aunque cambie el precio: eso es lo bonito de las variables.' };
+      }
+    }
+  },
+  'e-saludo': { titulo: 'saludo.py', pasos: true, codigo: 'nombre = input("¿Cómo te llamas? ")\nprint(f"¡Mucho gusto, {nombre}!")\nprint(f"Tu nombre tiene {len(nombre)} letras.")', lineas: 3 },
+  'e-reto-anio': {
+    titulo: 'anio.py', lineas: 3,
+    codigo: 'edad = input("¿Cuántos años tienes? ")\nprint("Naciste más o menos en", 2026 - edad)',
+    reto: {
+      sticker: 'input',
+      pistas: ['El error dice que no puede restar un texto. ¿Qué te da <code>input</code>, texto o número?', 'Envuelve el input con <code>int( )</code> para convertirlo: <code>edad = int(input("..."))</code>'],
+      solucion: 'edad = int(input("¿Cuántos años tienes? "))\nprint("Naciste más o menos en", 2026 - edad)',
+      probar(c) {
+        for (const [e, a] of [['20', '2006'], ['33', '1993']]) {
+          const r = correrCon(c, [e]);
+          const f = explicarFallo(r); if (f) return { ok: false, msg: f };
+          if (!r.salida.includes(a)) return { ok: false, msg: `Le contesté ${e} y esperaba ver ${a} en la salida.` };
+        }
+        return { ok: true, msg: 'Lo convertiste a número con int(). Ese error lo comete todo el mundo la primera vez.' };
+      }
+    }
+  },
+  'e-clima': { titulo: 'clima.py', pasos: true, codigo: 'temperatura = int(input("¿Cuántos grados hace? "))\nif temperatura > 30:\n    print("Hace mucho calor")\nelif temperatura > 20:\n    print("Está agradable")\nelse:\n    print("Hace frío")\nprint("Gracias por usar el clima.py")', lineas: 8 },
+  'e-reto-semaforo': {
+    titulo: 'semaforo.py', lineas: 8,
+    codigo: 'color = input("¿De qué color está el semáforo? ")\nif color == "rojo":\n    print("Alto")\n# agrega aquí el amarillo y el verde\n',
+    reto: {
+      sticker: 'if',
+      pistas: ['Para el amarillo usa <code>elif color == "amarillo":</code> y en el renglón de abajo, con sangría, el print.', 'Para «cualquier otro color» no hace falta condición: <code>else:</code>'],
+      solucion: 'color = input("¿De qué color está el semáforo? ")\nif color == "rojo":\n    print("Alto")\nelif color == "amarillo":\n    print("Precaución")\nelse:\n    print("Avanza")',
+      probar(c) {
+        const casos = [['rojo', /alto/i, 'Alto'], ['amarillo', /precauci[oó]n/i, 'Precaución'], ['verde', /avanza/i, 'Avanza'], ['azul', /avanza/i, 'Avanza']];
+        for (const [e, re, txt] of casos) {
+          const r = correrCon(c, [e]);
+          const f = explicarFallo(r); if (f) return { ok: false, msg: f };
+          const sal = r.salida;
+          if (!re.test(sal)) return { ok: false, msg: `Con «${e}» esperaba que imprimiera ${txt}.` };
+          const otros = casos.filter((x) => x[2] !== txt).map((x) => x[1]);
+          if (otros.some((o) => o.test(sal))) return { ok: false, msg: `Con «${e}» imprimió más de un mensaje. Revisa que uses elif y else, no varios if sueltos.` };
+        }
+        return { ok: true, msg: 'Probé rojo, amarillo, verde y azul: todos bien.' };
+      }
+    }
+  },
+  'e-piramide': { titulo: 'piramide.py', pasos: true, codigo: 'for i in range(1, 6):\n    print("*" * i)\nprint("¡Pirámide lista!")', lineas: 3 },
+  'e-despegue': { titulo: 'despegue.py', pasos: true, codigo: 'import time\ncuenta = 5\nwhile cuenta > 0:\n    print(cuenta)\n    time.sleep(1)\n    cuenta = cuenta - 1\nprint("¡Despegue! 🚀")', lineas: 7 },
+  'e-reto-tabla': {
+    titulo: 'tabla.py', lineas: 4, pasos: true,
+    codigo: 'n = int(input("¿Qué tabla quieres? "))\nfor i in range(1, 11):\n    print(n)    # cambia esto: que diga 7 x 1 = 7\n',
+    reto: {
+      sticker: 'for',
+      pistas: ['La variable <code>i</code> va de 1 a 10 y <code>n</code> es tu número. El resultado es <code>n * i</code>.', 'Con un f-string: <code>print(f"{n} x {i} = {n * i}")</code>'],
+      solucion: 'n = int(input("¿Qué tabla quieres? "))\nfor i in range(1, 11):\n    print(f"{n} x {i} = {n * i}")',
+      probar(c) {
+        for (const n of [7, 3]) {
+          const r = correrCon(c, [String(n)]);
+          const f = explicarFallo(r); if (f) return { ok: false, msg: f };
+          const ls = lineasDe(r.salida);
+          for (let i = 1; i <= 10; i++) {
+            const re = new RegExp('(^|\\D)' + n * i + '(\\D|$)');
+            if (!ls.some((l) => re.test(l) && l.includes(String(i)))) return { ok: false, msg: `Con la tabla del ${n} no encontré el renglón de ${n} x ${i} = ${n * i}.` };
+          }
+          if (ls.length > 12) return { ok: false, msg: `Con la tabla del ${n} salieron ${ls.length} renglones; deberían ser 10.` };
+        }
+        return { ok: true, msg: 'Probé la del 7 y la del 3. Ya no necesitas calculadora.' };
+      }
+    }
+  },
+  'e-juego': { titulo: 'adivina.py', guardar: false, codigo: '', lineas: 11 },
+  'e-lab': { titulo: 'laboratorio.py', pasos: true, memoria: false, codigo: '# Escribe aquí lo que quieras probar\nprint("¡Hola desde el laboratorio!")\n', lineas: 8 }
+};
+const editores = {};
+$$('[data-editor]').forEach((el) => {
+  const id = el.dataset.editor;
+  editores[id] = new Editor(el, Object.assign({ id }, EDITORES[id]));
+});
+
+/* ---------- quizzes ---------- */
+const QUIZZES = {
+  'q-comillas': { codigo: 'print("2 + 3")', ops: ['5', '2 + 3', 'Un error'], ok: 1, exp: 'Lo que va entre comillas es texto, y se imprime tal cual. Sin comillas, print(2 + 3) sí haría la suma.' },
+  'q-copia': { codigo: 'x = 5\ny = x\nx = 10\nprint(y)', ops: ['5', '10', 'x'], ok: 0, exp: 'En el renglón 2, y guardó lo que tenía x en ese momento: un 5. Cambiar x después no cambia a y.' },
+  'q-texto': { codigo: 'print("5" + "5")\nprint(5 + 5)', ops: ['10\n10', '55\n10', '55\n55'], ok: 1, exp: 'Con comillas son textos y + los pega: "55". Sin comillas son números y + los suma: 10.' },
+  'q-clima': { codigo: 'temperatura = 30\nif temperatura > 30:\n    print("Hace mucho calor")\nelif temperatura > 20:\n    print("Está agradable")\nelse:\n    print("Hace frío")', ops: ['Hace mucho calor', 'Está agradable', 'Hace frío'], ok: 1, exp: '30 no es mayor que 30 (es igual), así que la primera condición es falsa. La segunda sí se cumple: 30 > 20. Para incluir el 30 en la primera habría que usar >=.' },
+  'q-veces': { codigo: 'for i in range(3):\n    print("hola")', ops: ['2 veces', '3 veces', '4 veces'], ok: 1, exp: 'range(3) da 0, 1 y 2: tres números, tres vueltas. Cuando range lleva un solo número, empieza en 0.' }
+};
+$$('[data-quiz]').forEach((el) => {
+  const q = QUIZZES[el.dataset.quiz];
+  el.innerHTML = `<span class="quiz-cab">¿Qué imprime?</span><pre class="codigo">${resaltarTodo(q.codigo)}</pre><div class="quiz-ops">${q.ops.map((o, i) => `<button type="button" data-i="${i}">${esc(o)}</button>`).join('')}</div><div class="quiz-exp oculto"></div><div class="fila"><button class="btn btn-chico oculto" type="button" data-a="ver">${ICONO.play}Compruébalo corriéndolo</button></div><div class="salida-mini oculto"></div>`;
+  el.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.a === 'ver') {
+      const r = MiniPy.correrSincrono(q.codigo);
+      const s = $('.salida-mini', el); s.textContent = r.salida + (r.error ? r.error.message : ''); s.classList.remove('oculto'); return;
+    }
+    if (b.dataset.i == null) return;
+    const i = +b.dataset.i;
+    const exp = $('.quiz-exp', el);
+    if (i === q.ok) {
+      $$('.quiz-ops button', el).forEach((x) => { x.disabled = true; });
+      b.classList.add('bien');
+      exp.className = 'quiz-exp'; exp.innerHTML = `<b>¡Exacto!</b> ${esc(q.exp)}`;
+    } else {
+      b.classList.add('mal'); b.disabled = true;
+      exp.className = 'quiz-exp mal'; exp.innerHTML = '<b>Casi.</b> Vuelve a leer el código renglón por renglón y escoge otra.';
+    }
+    $('[data-a="ver"]', el).classList.remove('oculto');
+  });
+});
+
+/* ---------- portada: demo en vivo ---------- */
+function pintarDemo() {
+  const n = $('#nombre-demo').value.replace(/["\\]/g, '');
+  const codigo = `nombre = "${n}"\nprint(f"¡Hola, {nombre}!")\nprint("Hoy vas a programar.")`;
+  $('#demo-codigo').innerHTML = resaltarTodo(codigo);
+  const r = MiniPy.correrSincrono(codigo);
+  $('#demo-salida').textContent = r.error ? r.error.message : r.salida.trim();
+}
+$('#nombre-demo').addEventListener('input', pintarDemo);
+pintarDemo();
+
+/* ---------- robot ---------- */
+const NIVELES = [
+  { robot: [0, 2, 0], meta: [3, 2], rocas: [], msg: 'Nivel 1: el robot solo tiene que avanzar.' },
+  { robot: [0, 4, 0], meta: [3, 1], rocas: [[0, 2], [2, 2]], msg: 'Nivel 2: hay que dar una vuelta. Ojo: «gira» solo voltea al robot, no lo mueve.' },
+  { robot: [0, 4, 0], meta: [4, 0], rocas: [[2, 4], [0, 3], [1, 2], [3, 3], [2, 1], [4, 2], [3, 0]], msg: 'Nivel 3: una escalera entre rocas. Se va a hacer larga la lista…' }
+];
+const DX = [1, 0, -1, 0], DY = [0, 1, 0, -1];
+const ORD = { avanza: 'avanza()', izq: 'gira_izq()', der: 'gira_der()' };
+let nivel = 0, prog = [], corriendoRobot = false;
+let nivelesHechos = new Set(store.get('niveles', []));
+const SVG_BOT = '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 9V4" stroke="var(--line)" stroke-width="2.5"/><circle cx="20" cy="4" r="2.4" fill="var(--yellow)" stroke="var(--line)" stroke-width="2"/><rect x="7" y="9" width="24" height="23" rx="6" fill="var(--blue)" stroke="var(--line)" stroke-width="2.5"/><circle cx="24" cy="16.5" r="3" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><circle cx="24" cy="25" r="3" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><path d="M31 16l6 4.5-6 4.5z" fill="var(--yellow)" stroke="var(--line)" stroke-width="2" stroke-linejoin="round"/></svg>';
+const SVG_META = '<svg viewBox="0 0 40 40" aria-label="estrella"><path d="M20 4l4.5 9.3 10.2 1.5-7.4 7.2 1.8 10.2L20 27.4l-9.1 4.8 1.8-10.2-7.4-7.2 10.2-1.5z" fill="var(--yellow)" stroke="var(--line)" stroke-width="2.5" stroke-linejoin="round"/></svg>';
+const SVG_ROCA = '<svg viewBox="0 0 40 40" aria-label="roca"><path d="M6 30c-1-7 3-14 9-17 5-3 12-2 16 3 4 4 4 10 2 14z" fill="var(--ink-3)" stroke="var(--line)" stroke-width="2.5" stroke-linejoin="round"/><path d="M14 20c2-2 5-3 7-2" stroke="var(--card)" stroke-width="2" stroke-linecap="round" opacity=".6"/></svg>';
+function pintarTablero(estado) {
+  const N = NIVELES[nivel];
+  const t = $('#tablero');
+  let html = '';
+  for (let y = 0; y < 5; y++) for (let x = 0; x < 5; x++) {
+    const roca = N.rocas.some(([a, b]) => a === x && b === y);
+    const meta = N.meta[0] === x && N.meta[1] === y;
+    const pisado = estado && estado.rastro && estado.rastro.has(x + ',' + y);
+    html += `<div class="celda ${pisado ? 'paso' : ''}">${roca ? SVG_ROCA : meta ? SVG_META : ''}</div>`;
+  }
+  html += `<div class="bot" id="bot">${SVG_BOT}</div>`;
+  t.innerHTML = html;
+  const [x, y, d] = estado ? [estado.x, estado.y, estado.d] : N.robot;
+  moverBot(x, y, d, true);
+}
+function moverBot(x, y, d, sinAnim) {
+  const b = $('#bot'); if (!b) return;
+  if (sinAnim) b.style.transition = 'none';
+  b.style.transform = `translate(${x * 100}%, ${y * 100}%)`;
+  $('svg', b).style.transform = `rotate(${d * 90}deg)`;
+  if (sinAnim) { void b.offsetWidth; b.style.transition = ''; }
+  b.dataset.giro = d;
+}
+function pintarProg(activo, choco) {
+  const p = $('#programa-robot');
+  p.innerHTML = prog.length ? prog.map((o, i) => `<button type="button" class="chip ${i === activo ? (choco ? 'choco' : 'activo') : ''}" data-i="${i}" aria-label="Quitar la orden ${i + 1}"><small>${i + 1}</small>${ORD[o]}</button>`).join('') : '<span class="vacio">La lista de instrucciones está vacía.</span>';
+}
+function pintarNiveles() {
+  $('#niveles').innerHTML = NIVELES.map((_, i) => `<button type="button" aria-pressed="${i === nivel}" class="${nivelesHechos.has(i) ? 'hecho' : ''}" data-n="${i}">Nivel ${i + 1}</button>`).join('');
+}
+function elegirNivel(i) {
+  if (corriendoRobot) return;
+  nivel = i; prog = [];
+  pintarNiveles(); pintarTablero(); pintarProg();
+  msgRobot(NIVELES[i].msg);
+}
+function msgRobot(t, tipo) { const m = $('#robot-msg'); m.className = 'msg ' + (tipo || ''); m.innerHTML = t; }
+$('#niveles').addEventListener('click', (e) => { const b = e.target.closest('[data-n]'); if (b) elegirNivel(+b.dataset.n); });
+$$('[data-orden]').forEach((b) => b.addEventListener('click', () => {
+  if (corriendoRobot) return;
+  if (prog.length >= 24) { msgRobot('Ya son 24 instrucciones: es el máximo.'); return; }
+  prog.push(b.dataset.orden); pintarTablero(); pintarProg();
+}));
+$('#programa-robot').addEventListener('click', (e) => {
+  const c = e.target.closest('[data-i]'); if (!c || corriendoRobot) return;
+  prog.splice(+c.dataset.i, 1); pintarTablero(); pintarProg();
+});
+$('#robot-borrar').addEventListener('click', () => { if (corriendoRobot) return; prog.pop(); pintarTablero(); pintarProg(); });
+$('#robot-limpiar').addEventListener('click', () => { if (corriendoRobot) return; prog = []; pintarTablero(); pintarProg(); msgRobot(NIVELES[nivel].msg); });
+$('#robot-correr').addEventListener('click', async () => {
+  if (corriendoRobot) return;
+  if (!prog.length) { msgRobot('Primero agrega instrucciones tocando Avanza o Gira.'); return; }
+  corriendoRobot = true;
+  const N = NIVELES[nivel];
+  let [x, y, d] = N.robot;
+  let giro = d;
+  const rastro = new Set([x + ',' + y]);
+  pintarTablero({ x, y, d, rastro });
+  msgRobot('El robot está siguiendo tus instrucciones…');
+  await pausa(300);
+  let choco = false;
+  for (let i = 0; i < prog.length; i++) {
+    pintarProg(i);
+    const o = prog[i];
+    if (o === 'izq') { d = (d + 3) % 4; giro -= 1; }
+    else if (o === 'der') { d = (d + 1) % 4; giro += 1; }
+    else {
+      const nx = x + DX[d], ny = y + DY[d];
+      const fuera = nx < 0 || ny < 0 || nx > 4 || ny > 4;
+      const roca = N.rocas.some(([a, b]) => a === nx && b === ny);
+      if (fuera || roca) {
+        choco = true; pintarProg(i, true);
+        const b = $('#bot'); b.classList.remove('choca'); void b.offsetWidth; b.classList.add('choca');
+        msgRobot(`<b>¡Pum!</b> En la instrucción ${i + 1} el robot ${fuera ? 'se salía del tablero' : 'chocó con una roca'}. Hizo exactamente lo que le dijiste. Toca esa instrucción para quitarla o corrige la lista.`, 'mal');
+        break;
+      }
+      x = nx; y = ny; rastro.add(x + ',' + y);
+      $$('.celda')[y * 5 + x].classList.add('paso');
+    }
+    const b = $('#bot');
+    b.style.transform = `translate(${x * 100}%, ${y * 100}%)`;
+    $('svg', b).style.transform = `rotate(${giro * 90}deg)`;
+    await pausa(430);
+  }
+  if (!choco) {
+    pintarProg(-1);
+    if (x === N.meta[0] && y === N.meta[1]) {
+      nivelesHechos.add(nivel); store.set('niveles', [...nivelesHechos]); pintarNiveles();
+      if (nivel < 2) msgRobot(`<b>¡Llegó!</b> Usaste ${prog.length} instrucciones. <button class="btn btn-chico btn-verde" type="button" id="robot-siguiente">Siguiente nivel</button>`, 'ok');
+      else {
+        msgRobot(`<b>¡Llegó!</b> Usaste ${prog.length} instrucciones y casi todas se repiten: avanza, gira, avanza, gira… En Python eso se escribe en 3 renglones con un <b>ciclo</b>, y lo vas a aprender en la parte 6.`, 'ok');
+        ganar('robot');
+      }
+      const s = $('#robot-siguiente'); if (s) s.addEventListener('click', () => elegirNivel(nivel + 1));
+    } else msgRobot('El robot terminó su lista, pero no llegó a la estrella. Le faltan instrucciones o alguna está de más.', 'mal');
+  }
+  corriendoRobot = false;
+});
+pintarNiveles(); pintarTablero(); pintarProg(); msgRobot(NIVELES[0].msg);
+
+/* ---------- anatomía del print ---------- */
+const ANAT = [
+  { t: 'print', c: 't-fn', e: '<b>print</b> es la instrucción. En inglés significa «imprimir»: muestra algo en la pantalla. Se escribe en minúsculas: <code>Print</code> no funciona.' },
+  { t: '(', c: '', e: 'Los <b>paréntesis</b> envuelven lo que le das a la instrucción. Siempre van en pareja: el que abre y el que cierra.' },
+  { t: '"Hola, mundo"', c: 't-str', e: 'Las <b>comillas</b> le avisan a Python que esto es un texto y que lo use tal cual, letra por letra. Pueden ser dobles <code>"</code> o sencillas <code>\'</code>, pero las dos iguales.' },
+  { t: ')', c: '', e: 'El paréntesis que cierra. Si se te olvida, Python te avisa: «abriste un paréntesis y nunca lo cerraste».' }
+];
+$('#anat').innerHTML = ANAT.map((a, i) => `<button type="button" class="${a.c}" data-i="${i}" aria-pressed="false">${esc(a.t)}</button>`).join('');
+$('#anat').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-i]'); if (!b) return;
+  $$('#anat button').forEach((x) => x.setAttribute('aria-pressed', x === b));
+  $('#anat-exp').innerHTML = ANAT[+b.dataset.i].e;
+});
+
+/* ---------- diagrama del if ---------- */
+$('#flujo').innerHTML = `<svg viewBox="0 0 330 330" role="img" aria-label="Diagrama: si edad es mayor o igual a 18 imprime Ya puedes votar; si no, calcula cuántos años faltan">
+  <defs><marker id="pt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="punta" d="M0 0L10 5L0 10z"/></marker></defs>
+  <g class="nodo"><rect x="105" y="8" width="120" height="40" rx="10"/></g><text x="165" y="28" id="fl-edad">edad = 15</text>
+  <path class="flecha" d="M165 48V78" marker-end="url(#pt)"/>
+  <g class="nodo"><polygon points="165,82 255,132 165,182 75,132"/></g><text x="165" y="132">¿edad &gt;= 18?</text>
+  <g class="rama" id="rama-si"><path class="flecha" d="M75 132H45V230" marker-end="url(#pt)"/><text class="etiqueta-rama" x="58" y="120">Sí</text>
+    <g class="nodo"><rect x="8" y="234" width="140" height="52" rx="10"/></g><text x="78" y="260">Ya puedes votar</text></g>
+  <g class="rama" id="rama-no"><path class="flecha" d="M255 132H285V230" marker-end="url(#pt)"/><text class="etiqueta-rama" x="272" y="120">No</text>
+    <g class="nodo"><rect x="182" y="234" width="140" height="52" rx="10"/></g><text x="252" y="252">faltan = 18 - edad</text><text x="252" y="272" id="fl-faltan">Te faltan 3 años</text></g>
+</svg>`;
+function pintarFlujo() {
+  const e = +$('#edad-slider').value;
+  $('#edad-out').textContent = e;
+  $('#fl-edad').textContent = `edad = ${e}`;
+  const si = e >= 18;
+  $('#rama-si').setAttribute('class', 'rama ' + (si ? 'encendida' : 'apagada'));
+  $('#rama-no').setAttribute('class', 'rama ' + (si ? 'apagada' : 'encendida'));
+  const codigo = `edad = ${e}\nif edad >= 18:\n    print("Ya puedes votar")\nelse:\n    faltan = 18 - edad\n    print(f"Te faltan {faltan} años")`;
+  const corre = si ? [1, 2, 3] : [1, 2, 4, 5, 6];
+  $('#flujo-codigo').innerHTML = codigo.split('\n').map((l, i) => `<span class="${corre.includes(i + 1) ? (i > 1 ? 'linea-on' : '') : 'linea-off'}">${resaltar(l)}</span>`).join('\n');
+  const r = MiniPy.correrSincrono(codigo);
+  $('#flujo-salida').textContent = r.salida.trim();
+  $('#fl-faltan').textContent = si ? 'Te faltan … años' : `Te faltan ${18 - e} años`;
+}
+$('#edad-slider').addEventListener('input', pintarFlujo);
+pintarFlujo();
+
+/* ---------- explorador de range ---------- */
+const R = { ini: 1, fin: 6, paso: 1 };
+const LIM = { ini: [0, 12], fin: [0, 15], paso: [1, 5] };
+function pintarRango() {
+  const nums = []; for (let i = R.ini; i < R.fin; i += R.paso) nums.push(i);
+  $('#rango').innerHTML = `<div class="rango-ctl">${['ini', 'fin', 'paso'].map((k) => `<div class="paso-num"><span>${{ ini: 'inicio', fin: 'fin', paso: 'paso' }[k]}</span><div><button type="button" data-k="${k}" data-d="-1" aria-label="Bajar ${k}">−</button><b>${R[k]}</b><button type="button" data-k="${k}" data-d="1" aria-label="Subir ${k}">+</button></div></div>`).join('')}</div>
+  <pre class="codigo">${resaltar(`for i in range(${R.ini}, ${R.fin}${R.paso !== 1 ? ', ' + R.paso : ''}):`)}\n${resaltar('    print(i)')}</pre>
+  <div class="rango-res" aria-live="polite">${nums.length ? nums.map((n) => `<span>${n}</span>`).join('') + (R.fin >= R.ini && (R.fin - R.ini) % R.paso === 0 ? `<span class="fuera" title="El fin no entra">${R.fin}</span>` : '') : '<span class="fuera">nada</span>'}</div>
+  <p style="font-size:15px;color:var(--ink-2)">${nums.length ? `${nums.length} vuelta${nums.length === 1 ? '' : 's'}. ${R.fin >= R.ini && (R.fin - R.ini) % R.paso === 0 ? `El ${R.fin} aparece tachado: es el fin y nunca entra.` : ''}` : 'No da ningún número porque el inicio no es menor que el fin: el ciclo no da ni una vuelta.'}</p>`;
+}
+$('#rango').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-k]'); if (!b) return;
+  const k = b.dataset.k; R[k] = Math.min(LIM[k][1], Math.max(LIM[k][0], R[k] + +b.dataset.d));
+  pintarRango();
+});
+pintarRango();
+
+/* ---------- rompecabezas del juego ---------- */
+const FIJAS = ['import random', 'secreto = random.randint(1, 20)', 'intento = 0', 'print("Pensé un número del 1 al 20. ¡Adivínalo!")'];
+const PIEZAS = ['while intento != secreto:', '    intento = int(input("Tu número: "))', '    if intento < secreto:', '        print("Más alto ⬆")', '    elif intento > secreto:', '        print("Más bajo ⬇")', 'print(f"¡Adivinaste! Era el {secreto}")'];
+let pzSueltas = [], pzPuestas = [];
+function revolver() {
+  const idx = PIEZAS.map((_, i) => i);
+  do { for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; } } while (idx.every((v, i) => v === i));
+  pzSueltas = idx; pzPuestas = [];
+  pintarPz();
+  const m = $('#pz-msg'); m.className = 'msg'; m.textContent = 'Coloca las 7 piezas y dale «Probar mi juego». Lo vamos a jugar con un número secreto de prueba.';
+}
+const piezaHTML = (t) => { const s = t.match(/^ */)[0].length; return `${s ? `<span class="sang">${' '.repeat(s)}</span>` : ''}${resaltar(t.slice(s))}`; };
+function pintarPz() {
+  $('#pz-sueltas').innerHTML = pzSueltas.length ? pzSueltas.map((i) => `<button type="button" class="pieza" data-i="${i}">${piezaHTML(PIEZAS[i])}</button>`).join('') : '<span class="vacio">Ya usaste todas las piezas.</span>';
+  $('#pz-programa').innerHTML = FIJAS.map((t) => `<div class="pieza fija">${piezaHTML(t)}</div>`).join('') + pzPuestas.map((i) => `<button type="button" class="pieza" data-i="${i}">${piezaHTML(PIEZAS[i])}</button>`).join('');
+}
+$('#pz-sueltas').addEventListener('click', (e) => { const b = e.target.closest('[data-i]'); if (!b) return; const i = +b.dataset.i; pzSueltas = pzSueltas.filter((x) => x !== i); pzPuestas.push(i); pintarPz(); });
+$('#pz-programa').addEventListener('click', (e) => { const b = e.target.closest('[data-i]'); if (!b) return; const i = +b.dataset.i; pzPuestas = pzPuestas.filter((x) => x !== i); pzSueltas.push(i); pintarPz(); });
+$('#pz-revolver').addEventListener('click', revolver);
+$('#pz-probar').addEventListener('click', () => {
+  const m = $('#pz-msg');
+  const mal = (t) => { m.className = 'msg mal'; m.innerHTML = t; };
+  if (pzSueltas.length) return mal(`Te faltan ${pzSueltas.length} pieza${pzSueltas.length === 1 ? '' : 's'} por colocar.`);
+  const codigo = FIJAS.concat(pzPuestas.map((i) => PIEZAS[i])).join('\n');
+  const r = correrCon(codigo, ['5', '18', '13'], { azar: () => 0.62, maxPasos: 5000 });
+  if (r.error) {
+    if (r.error.tipo === 'SinEntradas') return mal('Probé con el secreto 13: dije 5, 18 y 13, pero el juego siguió pidiendo números. ¿Quedó bien el while? Lo que se repite tiene que ir «adentro» de él.');
+    if (r.error.tipo === 'Bucle') return mal('El juego se quedó dando vueltas sin preguntar nada. Revisa qué pieza va justo debajo del while.');
+    if (r.error.tipo === 'IndentationError') return mal(`Problema de sangría en el renglón ${r.error.linea}: ${esc(r.error.message)} Revisa el orden de las piezas.`);
+    return mal(`El juego marcó un error en el renglón ${r.error.linea}: ${esc(r.error.message)}`);
+  }
+  const s = r.salida;
+  const iAlto = s.indexOf('Más alto'), iBajo = s.indexOf('Más bajo'), iGano = s.indexOf('¡Adivinaste');
+  if (iGano < 0) return mal('Probé con el secreto 13 y nunca dijo «¡Adivinaste!». ¿Dónde quedó ese print?');
+  if (iAlto < 0) return mal('Probé con el secreto 13 y dije 5. Debió decir «Más alto», pero no lo dijo.');
+  if (iBajo < 0) return mal('Probé con el secreto 13 y dije 18. Debió decir «Más bajo», pero no lo dijo.');
+  if (!(iAlto < iBajo && iBajo < iGano)) return mal('Los mensajes salen en un orden raro. Revisa que el «¡Adivinaste!» vaya al final, sin sangría.');
+  if ((s.match(/Adivinaste/g) || []).length > 1) return mal('Dijo «¡Adivinaste!» más de una vez: ese print va fuera del while, sin sangría.');
+  m.className = 'msg ok';
+  m.innerHTML = '<b>¡Tu juego funciona!</b> Lo probé con el secreto 13: dije 5 (más alto), 18 (más bajo) y 13 (¡adivinaste!). Ahora juégalo abajo.';
+  ganar('juego');
+  const libre = $('#juego-libre'); libre.classList.remove('oculto');
+  editores['e-juego'].setCodigo(codigo);
+  editores['e-juego'].op.codigo = codigo;
+  store.set('juego', codigo);
+});
+revolver();
+const juegoGuardado = store.get('juego', null);
+if (juegoGuardado) { $('#juego-libre').classList.remove('oculto'); editores['e-juego'].op.codigo = juegoGuardado; editores['e-juego'].setCodigo(juegoGuardado); }
+
+/* ---------- laboratorio ---------- */
+const EJEMPLOS = {
+  'Cuenta regresiva': 'import time\nfor n in range(10, 0, -1):\n    print(n)\n    time.sleep(0.5)\nprint("¡Feliz año nuevo! 🎆")',
+  'Triángulo': 'tamano = int(input("¿De qué tamaño? "))\nfor i in range(1, tamano + 1):\n    print(" " * (tamano - i) + "▲ " * i)',
+  'Dados': 'import random\ndado1 = random.randint(1, 6)\ndado2 = random.randint(1, 6)\nprint("Salió", dado1, "y", dado2)\nif dado1 == dado2:\n    print("¡Par! Tiras otra vez")',
+  'Lista de compras': 'compras = []\nwhile True:\n    cosa = input("¿Qué agregas? (Enter vacío para terminar) ")\n    if cosa == "":\n        break\n    compras.append(cosa)\nprint("Tu lista:")\nfor c in compras:\n    print("-", c)\nprint("Son", len(compras), "cosas")',
+  'Números enormes': 'print(2 ** 100)\nprint(len(str(2 ** 1000)), "dígitos tiene 2 a la 1000")',
+  'Piedra, papel o tijera': 'import random\nopciones = ["piedra", "papel", "tijera"]\nyo = input("¿piedra, papel o tijera? ").lower()\ncompu = random.choice(opciones)\nprint("La compu eligió", compu)\nif yo == compu:\n    print("Empate")\nelif (yo == "piedra" and compu == "tijera") or (yo == "papel" and compu == "piedra") or (yo == "tijera" and compu == "papel"):\n    print("¡Ganaste!")\nelse:\n    print("Ganó la compu")'
+};
+$('#lab-ejemplos').innerHTML = Object.keys(EJEMPLOS).map((k) => `<button class="btn btn-chico" type="button" data-ej="${esc(k)}">${esc(k)}</button>`).join('');
+$('#lab-ejemplos').addEventListener('click', (e) => { const b = e.target.closest('[data-ej]'); if (!b) return; editores['e-lab'].setCodigo(EJEMPLOS[b.dataset.ej]); store.set('code_e-lab', EJEMPLOS[b.dataset.ej]); });
+
+/* ---------- encuesta y rúbrica ---------- */
+const PREGUNTAS = [
+  'Me dio curiosidad cambiar cosas solo para ver qué pasaba.',
+  'Cuando salió un error, me dieron ganas de arreglarlo.',
+  'Sentí satisfacción cuando algo por fin funcionó.',
+  'Se me pasó el tiempo rápido.',
+  'Me imagino haciendo algo propio con esto: un juego, una app o algo que me ahorre trabajo.'
+];
+const OPS = ['No', 'Más o menos', '¡Sí!'];
+let resp = store.get('encuesta', {});
+function pintarEncuesta() {
+  $('#encuesta').innerHTML = PREGUNTAS.map((p, i) => `<div class="preg"><p>${esc(p)}</p><div class="ops" role="group">${OPS.map((o, j) => `<button type="button" data-p="${i}" data-o="${j}" aria-pressed="${resp[i] === j}">${o}</button>`).join('')}</div></div>`).join('');
+  const n = Object.keys(resp).length;
+  const v = $('#veredicto');
+  if (n < PREGUNTAS.length) { v.classList.add('oculto'); return; }
+  const pts = Object.values(resp).reduce((a, b) => a + b, 0);
+  v.classList.remove('oculto');
+  v.innerHTML = pts >= 7
+    ? '<b>Tiene toda la pinta de que te gusta.</b><p>La curiosidad por cambiar cosas y las ganas de arreglar errores son justo lo que se siente programar todos los días. Vale mucho la pena una segunda clase: funciones propias y tu primer proyecto.</p>'
+    : pts >= 4
+      ? '<b>Hay chispa.</b><p>Algunas partes te gustaron y otras no tanto, y es lo normal la primera vez. La programación tiene muchos sabores (juegos, páginas web, datos, robots). Prueba una segunda clase con un tema que te interese a ti.</p>'
+      : '<b>Hoy no te enganchó, y está bien.</b><p>No a todo el mundo le gusta, y saberlo también es un buen resultado de esta hora. Si alguna parte sí te gustó, platícalo: a veces el tema correcto lo cambia todo.</p>';
+}
+$('#encuesta').addEventListener('click', (e) => { const b = e.target.closest('[data-p]'); if (!b) return; resp[b.dataset.p] = +b.dataset.o; store.set('encuesta', resp); pintarEncuesta(); });
+pintarEncuesta();
+
+const SENALES = [
+  'Cambió el código por su cuenta, sin que se lo pidieras.',
+  'Preguntó «¿y si hago…?» al menos una vez.',
+  'Ante un error, leyó el mensaje antes de pedirte ayuda.',
+  'Arregló el error del año de nacimiento sin ver la solución.',
+  'Se emocionó cuando algo funcionó («¡ya salió!»).',
+  'Terminó el reto final, o quedó muy cerca.',
+  'Quiso seguir después de la hora.'
+];
+let marcas = store.get('rubrica', []);
+function pintarRubrica() {
+  const r = $('#rubrica');
+  r.innerHTML = '<p class="mano">Lo que observaste (llénalo sin que lo vea):</p>' + SENALES.map((s, i) => `<label><input type="checkbox" id="rb-${i}" data-i="${i}" ${marcas.includes(i) ? 'checked' : ''}><span>${esc(s)}</span></label>`).join('') +
+    `<p><b>${marcas.length} de ${SENALES.length} señales.</b> ${marcas.length >= 4 ? 'Dale una segunda clase y un proyecto propio pronto, mientras está la emoción.' : marcas.length >= 2 ? 'Hay interés real. Busquen su tema: juegos, páginas web, datos o automatizar algo de su trabajo.' : 'No lo fuerces. Pregúntale qué parte sí le gustó; con eso decides si hay segunda clase.'} Es una guía para platicar, no un examen.</p>`;
+}
+$('#rubrica').addEventListener('change', (e) => { const i = +e.target.dataset.i; marcas = e.target.checked ? [...new Set([...marcas, i])] : marcas.filter((x) => x !== i); store.set('rubrica', marcas); pintarRubrica(); });
+pintarRubrica();
+
+/* ---------- agenda, reloj y modo profe ---------- */
+const SECCIONES = $$('.hoja[data-ini]').map((s) => ({ id: s.id, titulo: s.dataset.titulo, ini: +s.dataset.ini, fin: +s.dataset.fin }));
+$('#agenda').innerHTML = SECCIONES.map((s, i) => `<a href="#${s.id}" data-id="${s.id}"><small>${i + 1} · min ${s.ini}–${s.fin}</small>${esc(s.titulo)}</a>`).join('');
+let reloj = store.get('reloj', { inicio: null, acum: 0 });
+const transcurrido = () => reloj.acum + (reloj.inicio ? Date.now() - reloj.inicio : 0);
+function pintarReloj() {
+  const ms = transcurrido();
+  const m = Math.floor(ms / 60000), s = Math.floor(ms / 1000) % 60;
+  const b = $('#reloj');
+  $('#reloj-txt').textContent = !reloj.inicio && !reloj.acum ? 'Empezar' : `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}${reloj.inicio ? '' : ' ⏸'}`;
+  b.classList.toggle('tarde', m >= 60);
+  if (reloj.inicio || reloj.acum) {
+    const toca = SECCIONES.find((x) => m >= x.ini && m < x.fin);
+    $('#ahora').innerHTML = m >= 60 ? '<b>¡Se acabó la hora!</b> Ve al cierre.' : toca ? `Minuto ${m}: toca <b>${esc(toca.titulo)}</b>` : '';
+  }
+}
+$('#reloj').addEventListener('click', () => {
+  if (reloj.inicio) { reloj.acum = transcurrido(); reloj.inicio = null; }
+  else reloj.inicio = Date.now();
+  store.set('reloj', reloj); pintarReloj();
+});
+$('#reloj').addEventListener('dblclick', () => { reloj = { inicio: null, acum: 0 }; store.set('reloj', reloj); pintarReloj(); });
+$('#btn-empezar').addEventListener('click', () => { if (!reloj.inicio && !reloj.acum) { reloj.inicio = Date.now(); store.set('reloj', reloj); pintarReloj(); } });
+setInterval(pintarReloj, 1000); pintarReloj();
+
+function ponerProfe(on) {
+  document.documentElement.classList.toggle('modo-profe', on);
+  $('#btn-profe').setAttribute('aria-pressed', on);
+  store.set('profe', on);
+}
+$('#btn-profe').addEventListener('click', () => ponerProfe(!document.documentElement.classList.contains('modo-profe')));
+ponerProfe(store.get('profe', false));
+
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((ents) => {
+    ents.forEach((en) => { if (en.isIntersecting) { const a = $(`#agenda a[data-id="${en.target.id}"]`); if (a) a.classList.add('hecho'); } });
+  }, { threshold: 0.35 });
+  $$('.hoja[data-ini]').forEach((s) => io.observe(s));
+}
+pintarStickers();
+})();
+</script>
